@@ -46,7 +46,7 @@
   },
   "scripts": {
     "clean": "rimraf dist/",
-    "start":"node server.js | npm run start:kanban",
+    "start":"node server.js",
     "start:local": "NODE_ENV=dev DEBUG=* npm run clean && node server.js | npm run start:kanban",
     "start:server": "node server.js",
     "start:kanban": "node node_modules/@ag04/kanban-api/dist/index.js",
