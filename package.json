@@ -45,7 +45,7 @@
     "webpack-hot-middleware": "^2.21.2"
   },
   "scripts": {
-    "clean": "rimraf dist/",
+    "clean": "rimraf public/",
     "start":"node server.js",
     "start:local": "NODE_ENV=dev DEBUG=* npm run clean && node server.js | npm run start:kanban",
     "start:server": "node server.js",

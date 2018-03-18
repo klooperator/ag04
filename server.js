@@ -2,13 +2,14 @@ const app = require('express')();
 const static = require('express').static;
 const http = require('http');
 var path = require('path');
-const webpack = require('webpack');
+/* const webpack = require('webpack'); */
 const webpackConfig = require('./webpack.config');
 
 app.set('port', process.env.PORT || 9873);
-app.set('env', process.env.NODE_ENV || 'development');
-const compiler = webpack(webpackConfig);
-if (app.get('env') === 'development') {
+app.set('env', process.env.NODE_ENV || 'dev');
+
+if (app.get('env') === 'dev') {
+  const compiler = require('webpack')(webpackConfig);
   console.log('111');
   app.use(
     require('webpack-dev-middleware')(compiler, {
@@ -26,17 +27,17 @@ if (app.get('env') === 'development') {
       path: '/__webpack_hmr',
     }),
   );
-
-  app.use(static(path.join(__dirname, 'public')));
-
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.send('error', {
-      message: err.message,
-      error: err,
-    });
-  });
 }
+app.use(static(path.join(__dirname, 'public')));
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send('error', {
+    message: err.message,
+    error: err,
+  });
+});
+
 if (app.get('env') === 'production') {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
@@ -44,7 +45,7 @@ if (app.get('env') === 'production') {
   });
 }
 
-app.use('*', (req, res, next) => {
+/* app.use('*', (req, res, next) => {
   const filename = path.join(compiler.outputPath, 'index.html');
   compiler.outputFileSystem.readFile(filename, (err, result) => {
     if (err) {
@@ -54,7 +55,7 @@ app.use('*', (req, res, next) => {
     res.send(result);
     res.end();
   });
-});
+}); */
 
 const server = http.createServer(app);
 server.listen(app.get('port'), () => {

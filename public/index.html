@@ -7,13 +7,33 @@
   <title>
     ag04-react
   </title>
+  <style>
+  html, body{
+    padding: 0;
+    margin: 0;
+  }
+  html{
+    height: 100%;
+  }
+  body{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  #app{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+    flex-direction: column;
+  }
+  </style>
 </head>
 
 <body>
-  <header class="sticky" id="header">
-  </header>
-  <div class="v-center">
-    <div id="app" class="row"></div>
+  <div id="app">
   </div>
 <script type="text/javascript" src="/bundle.js"></script></body>
 
