@@ -1,0 +1,94 @@
+{
+  "tags": [
+    {
+      "id": 1,
+      "name": "bug"
+    },
+    {
+      "id": 2,
+      "name": "feature"
+    },
+    {
+      "id": 3,
+      "name": "backend"
+    },
+    {
+      "id": 4,
+      "name": "frontend"
+    },
+    {
+      "id": 5,
+      "name": "system"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "reporter": "a1139b8b-2059-46b8-9adf-ce47ff5d247c",
+      "assignee": null,
+      "name": "Add materialized data views",
+      "description": "Implement materialized views for common queries",
+      "status": "TODO",
+      "tags": [
+        2,
+        3
+      ],
+      "blockedBy": [
+        2
+      ]
+    },
+    {
+      "id": 2,
+      "reporter": "a1139b8b-2059-46b8-9adf-ce47ff5d247c",
+      "assignee": null,
+      "name": "Redis server",
+      "description": "Setup and configure Redis server",
+      "status": "IN_PROGRESS",
+      "tags": [
+        2,
+        3
+      ],
+      "blockedBy": []
+    }
+  ],
+  "users": [
+    {
+      "username": "steve",
+      "password": "$2a$04$Ojp.J5q.zykbXic/o9hmveloq9O2Cl.z7D.rSaoOvS/8TU2lg24Na",
+      "name": "Steve Wozniak",
+      "id": "a1139b8b-2059-46b8-9adf-ce47ff5d247c"
+    },
+    {
+      "username": "linus",
+      "password": "$2a$04$SrLetl2/xppnibSRvDVowu2hZgj4T1ydFBOvR14OO5B1pkB1WNOcO",
+      "name": "Linus Torvalds",
+      "id": "f33a440f-c18f-4d62-a6d8-25411d937cfa"
+    },
+    {
+      "username": "dennis",
+      "password": "$2a$04$.3PlyTVSdPVMeQMz1aLjW.JN.tW79NT/XGN6nLfx4iLdKb.ud3Gui",
+      "name": "Dennis Ritchie",
+      "id": "42c167a5-59d7-4a9c-80b3-460176183cf7"
+    },
+    {
+      "username": "bill",
+      "password": "$2a$04$nu2yVimrk/6jlaBznjHclOtEoA9WwQJ.AFhnWKETxLI6SfG2mzdJG",
+      "name": "Bill Gates",
+      "id": "fbd52ec5-04b1-4a8d-9250-352a1d936725"
+    },
+    {
+      "username": "mark",
+      "password": "$2a$04$IXKZNpaERY5y/K2ogU7Dc.V.UeZ4FA/7WOrwEYO0vTpPHeVENva9O",
+      "name": "Mark Zuckerburg",
+      "id": "be242def-1aa6-455f-9660-437413b5969b"
+    },
+    {
+      "username": "klo",
+      "password": "$2a$04$trSghVRKJtpfqLC.vW4u3OmsKh156xnQGrgUPztP9IyHNdsAxfP.6",
+      "name": "klo",
+      "id": "8dbba62a-87c1-4a8e-801c-62b50bd7a37c"
+    }
+  ],
+  "taskIndex": 2,
+  "tagIndex": 4
+}
