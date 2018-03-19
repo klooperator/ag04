@@ -9,6 +9,9 @@ import { DragDropContext } from 'react-dnd';
 import Button from 'material-ui/Button';
 import Task from './Task';
 import Column from './Column';
+import AddTask from './AddTask';
+
+const Aux = props => props.children;
 
 const _c = ['TODO', 'IN_PROGRESS', 'DONE'];
 
@@ -26,11 +29,11 @@ const styles = () => ({
 });
 
 class Kanban extends Component {
-  /* constructor(props) {
+  constructor(props) {
     super(props);
-    this.state = { knb: undefined };
+    this.state = { addTaskModal: false };
   }
-  componentWillReceiveProps(next) {
+  /* componentWillReceiveProps(next) {
     console.log(next);
     if (!this.props.tasks.data && next.tasks.data) {
       this.setState({ knb: this.getTasks(next.tasks.data) });
@@ -38,7 +41,7 @@ class Kanban extends Component {
   } */
 
   addTask = name => () => {
-    console.log(name);
+    this.setState({ addTaskModal: true });
   };
 
   getTasks = (data) => {
@@ -57,32 +60,41 @@ class Kanban extends Component {
     return out;
   };
 
+  closeAddTask = () => {
+    this.setState({ addTaskModal: false });
+  };
+
   render() {
     console.log(this);
     const { classes, style, knb } = this.props;
     /* const { knb } = this.state; */
     if (!knb) return <div />;
     return (
-      <Card style={style}>
-        <CardContent className={classes.card}>
-          {Object.keys(knb).map(e => (
-            <Column className={classes.list} name={e} key={e}>
-              {knb[e].map((t, i) => (
-                <Task
-                  from={e}
-                  index={i}
-                  key={`${t.name.replace(' ', '')}_${i + 1232}`}
-                  id={`${e}_${i}`}
-                  data={t}
-                />
-              ))}
-              <Button className={classes.addButton} onClick={this.addTask(e)}>
-                Add
-              </Button>
-            </Column>
-          ))}
-        </CardContent>
-      </Card>
+      <Aux>
+        <Card style={style}>
+          <CardContent className={classes.card}>
+            {Object.keys(knb).map(e => (
+              <Column className={classes.list} name={e} key={e}>
+                {knb[e].map((t, i) => (
+                  <Task
+                    from={e}
+                    index={i}
+                    key={`${t.name.replace(' ', '')}_${i + 1232}`}
+                    id={`${e}_${i}`}
+                    data={t}
+                  />
+                ))}
+                {e === 'TODO' && (
+                  <Button className={classes.addButton} onClick={this.addTask(e)}>
+                    Add
+                  </Button>
+                )}
+              </Column>
+            ))}
+          </CardContent>
+        </Card>
+        <AddTask open={this.state.addTaskModal} handleClose={this.closeAddTask} />
+      </Aux>
     );
   }
 }

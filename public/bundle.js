@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "da3ad2edaf14f85b9a9f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "37dfd3a2a3cddc757553"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -783,6 +783,8 @@ var store = (0, _Store2.default)();
 
 _reduxRestFetcher2.default.setDispatcher(store.dispatch);
 _reduxRestFetcher2.default.setGetState(store.getState);
+
+_reduxRestFetcher2.default.sign_in({ body: { username: 'klo', password: 'test' } });
 
 var CENTRAL_NODE = document.getElementById('app');
 
@@ -18132,6 +18134,197 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /***/ }),
 
+/***/ "./node_modules/material-ui/Checkbox/Checkbox.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.styles = undefined;
+
+var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _objectWithoutProperties2 = __webpack_require__("./node_modules/babel-runtime/helpers/objectWithoutProperties.js");
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__("./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__("./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _SwitchBase = __webpack_require__("./node_modules/material-ui/internal/SwitchBase.js");
+
+var _SwitchBase2 = _interopRequireDefault(_SwitchBase);
+
+var _IndeterminateCheckBox = __webpack_require__("./node_modules/material-ui/internal/svg-icons/IndeterminateCheckBox.js");
+
+var _IndeterminateCheckBox2 = _interopRequireDefault(_IndeterminateCheckBox);
+
+var _withStyles = __webpack_require__("./node_modules/material-ui/styles/withStyles.js");
+
+var _withStyles2 = _interopRequireDefault(_withStyles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = exports.styles = function styles(theme) {
+  return {
+    default: {
+      color: theme.palette.text.secondary
+    },
+    checked: {},
+    checkedPrimary: {
+      color: theme.palette.primary.main
+    },
+    checkedSecondary: {
+      color: theme.palette.secondary.main
+    },
+    disabled: {
+      color: theme.palette.action.disabled
+    }
+  };
+};
+
+function Checkbox(props) {
+  var _classNames;
+
+  var checkedIcon = props.checkedIcon,
+      classes = props.classes,
+      color = props.color,
+      icon = props.icon,
+      indeterminate = props.indeterminate,
+      indeterminateIcon = props.indeterminateIcon,
+      other = (0, _objectWithoutProperties3.default)(props, ['checkedIcon', 'classes', 'color', 'icon', 'indeterminate', 'indeterminateIcon']);
+
+  var checkedClass = (0, _classnames2.default)(classes.checked, (_classNames = {}, (0, _defineProperty3.default)(_classNames, classes.checkedPrimary, color === 'primary'), (0, _defineProperty3.default)(_classNames, classes.checkedSecondary, color === 'secondary'), _classNames));
+
+  return _react2.default.createElement(_SwitchBase2.default, (0, _extends3.default)({
+    checkedIcon: indeterminate ? indeterminateIcon : checkedIcon,
+    classes: {
+      default: classes.default,
+      checked: checkedClass,
+      disabled: classes.disabled
+    },
+    icon: indeterminate ? indeterminateIcon : icon
+  }, other));
+}
+
+Checkbox.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * If `true`, the component is checked.
+   */
+  checked: _propTypes2.default.oneOfType([_propTypes2.default.bool, _propTypes2.default.string]),
+  /**
+   * The icon to display when the component is checked.
+   */
+  checkedIcon: _propTypes2.default.node,
+  /**
+   * Useful to extend the style applied to components.
+   */
+  classes: _propTypes2.default.object.isRequired,
+  /**
+   * The color of the component. It supports those theme colors that make sense for this component.
+   */
+  color: _propTypes2.default.oneOf(['primary', 'secondary']),
+  /**
+   * If `true`, the switch will be disabled.
+   */
+  disabled: _propTypes2.default.bool,
+  /**
+   * If `true`, the ripple effect will be disabled.
+   */
+  disableRipple: _propTypes2.default.bool,
+  /**
+   * The icon to display when the component is unchecked.
+   */
+  icon: _propTypes2.default.node,
+  /**
+   * The id of the `input` element.
+   */
+  id: _propTypes2.default.string,
+  /**
+   * If `true`, the component appears indeterminate.
+   */
+  indeterminate: _propTypes2.default.bool,
+  /**
+   * The icon to display when the component is indeterminate.
+   */
+  indeterminateIcon: _propTypes2.default.node,
+  /**
+   * Properties applied to the `input` element.
+   */
+  inputProps: _propTypes2.default.object,
+  /**
+   * Use that property to pass a ref callback to the native input component.
+   */
+  inputRef: _propTypes2.default.func,
+  /**
+   * Callback fired when the state is changed.
+   *
+   * @param {object} event The event source of the callback
+   * @param {boolean} checked The `checked` value of the switch
+   */
+  onChange: _propTypes2.default.func,
+  /**
+   * The input component property `type`.
+   */
+  type: _propTypes2.default.string,
+  /**
+   * The value of the component.
+   */
+  value: _propTypes2.default.string
+} : {};
+
+Checkbox.defaultProps = {
+  color: 'secondary',
+  indeterminate: false,
+  indeterminateIcon: _react2.default.createElement(_IndeterminateCheckBox2.default, null)
+};
+
+exports.default = (0, _withStyles2.default)(styles, { name: 'MuiCheckbox' })(Checkbox);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/Checkbox/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Checkbox = __webpack_require__("./node_modules/material-ui/Checkbox/Checkbox.js");
+
+Object.defineProperty(exports, 'default', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Checkbox).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
 /***/ "./node_modules/material-ui/Dialog/Dialog.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19851,6 +20044,182 @@ Object.defineProperty(exports, 'FormControlLabel', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_FormControlLabel).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/IconButton/IconButton.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.styles = undefined;
+
+var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _objectWithoutProperties2 = __webpack_require__("./node_modules/babel-runtime/helpers/objectWithoutProperties.js");
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__("./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__("./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _withStyles = __webpack_require__("./node_modules/material-ui/styles/withStyles.js");
+
+var _withStyles2 = _interopRequireDefault(_withStyles);
+
+var _ButtonBase = __webpack_require__("./node_modules/material-ui/ButtonBase/index.js");
+
+var _ButtonBase2 = _interopRequireDefault(_ButtonBase);
+
+var _helpers = __webpack_require__("./node_modules/material-ui/utils/helpers.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// @inheritedComponent ButtonBase
+
+var styles = exports.styles = function styles(theme) {
+  return {
+    root: {
+      textAlign: 'center',
+      flex: '0 0 auto',
+      fontSize: theme.typography.pxToRem(24),
+      width: 48,
+      height: 48,
+      padding: 0,
+      borderRadius: '50%',
+      color: theme.palette.action.active,
+      transition: theme.transitions.create('background-color', {
+        duration: theme.transitions.duration.shortest
+      })
+    },
+    colorInherit: {
+      color: 'inherit'
+    },
+    colorPrimary: {
+      color: theme.palette.primary.main
+    },
+    colorSecondary: {
+      color: theme.palette.secondary.main
+    },
+    disabled: {
+      color: theme.palette.action.disabled
+    },
+    label: {
+      width: '100%',
+      display: 'flex',
+      alignItems: 'inherit',
+      justifyContent: 'inherit'
+    }
+  };
+};
+
+/**
+ * Refer to the [Icons](/style/icons) section of the documentation
+ * regarding the available icon options.
+ */
+function IconButton(props) {
+  var _classNames;
+
+  var children = props.children,
+      classes = props.classes,
+      className = props.className,
+      color = props.color,
+      disabled = props.disabled,
+      other = (0, _objectWithoutProperties3.default)(props, ['children', 'classes', 'className', 'color', 'disabled']);
+
+
+  return _react2.default.createElement(
+    _ButtonBase2.default,
+    (0, _extends3.default)({
+      className: (0, _classnames2.default)(classes.root, (_classNames = {}, (0, _defineProperty3.default)(_classNames, classes['color' + (0, _helpers.capitalize)(color)], color !== 'default'), (0, _defineProperty3.default)(_classNames, classes.disabled, disabled), _classNames), className),
+      centerRipple: true,
+      focusRipple: true,
+      disabled: disabled
+    }, other),
+    _react2.default.createElement(
+      'span',
+      { className: classes.label },
+      children
+    )
+  );
+}
+
+IconButton.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * The icon element.
+   */
+  children: _propTypes2.default.node,
+  /**
+   * Useful to extend the style applied to components.
+   */
+  classes: _propTypes2.default.object.isRequired,
+  /**
+   * @ignore
+   */
+  className: _propTypes2.default.string,
+  /**
+   * The color of the component. It supports those theme colors that make sense for this component.
+   */
+  color: _propTypes2.default.oneOf(['default', 'inherit', 'primary', 'secondary']),
+  /**
+   * If `true`, the button will be disabled.
+   */
+  disabled: _propTypes2.default.bool,
+  /**
+   * If `true`, the ripple will be disabled.
+   */
+  disableRipple: _propTypes2.default.bool
+} : {};
+
+IconButton.defaultProps = {
+  color: 'default',
+  disabled: false
+};
+
+exports.default = (0, _withStyles2.default)(styles, { name: 'MuiIconButton' })(IconButton);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/IconButton/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _IconButton = __webpack_require__("./node_modules/material-ui/IconButton/IconButton.js");
+
+Object.defineProperty(exports, 'default', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_IconButton).default;
   }
 });
 
@@ -22595,6 +22964,127 @@ exports.default = (0, _withStyles2.default)(styles, { name: 'MuiMenu', withTheme
 
 /***/ }),
 
+/***/ "./node_modules/material-ui/Menu/MenuItem.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.styles = undefined;
+
+var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _objectWithoutProperties2 = __webpack_require__("./node_modules/babel-runtime/helpers/objectWithoutProperties.js");
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__("./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__("./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _withStyles = __webpack_require__("./node_modules/material-ui/styles/withStyles.js");
+
+var _withStyles2 = _interopRequireDefault(_withStyles);
+
+var _ListItem = __webpack_require__("./node_modules/material-ui/List/ListItem.js");
+
+var _ListItem2 = _interopRequireDefault(_ListItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = exports.styles = function styles(theme) {
+  return {
+    root: (0, _extends3.default)({}, theme.typography.subheading, {
+      height: theme.spacing.unit * 3,
+      boxSizing: 'content-box',
+      width: 'auto',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      paddingLeft: theme.spacing.unit * 2,
+      paddingRight: theme.spacing.unit * 2,
+      '&$selected': {
+        backgroundColor: theme.palette.action.selected
+      }
+    }),
+    selected: {}
+  };
+}; // @inheritedComponent ListItem
+
+function MenuItem(props) {
+  var classes = props.classes,
+      className = props.className,
+      component = props.component,
+      selected = props.selected,
+      role = props.role,
+      other = (0, _objectWithoutProperties3.default)(props, ['classes', 'className', 'component', 'selected', 'role']);
+
+
+  return _react2.default.createElement(_ListItem2.default, (0, _extends3.default)({
+    button: true,
+    role: role,
+    tabIndex: -1,
+    className: (0, _classnames2.default)(classes.root, (0, _defineProperty3.default)({}, classes.selected, selected), className),
+    component: component
+  }, other));
+}
+
+MenuItem.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * Menu item contents.
+   */
+  children: _propTypes2.default.node,
+  /**
+   * Useful to extend the style applied to components.
+   */
+  classes: _propTypes2.default.object.isRequired,
+  /**
+   * @ignore
+   */
+  className: _propTypes2.default.string,
+  /**
+   * The component used for the root node.
+   * Either a string to use a DOM element or a component.
+   */
+  component: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.func]),
+  /**
+   * @ignore
+   */
+  role: _propTypes2.default.string,
+  /**
+   * Use to apply selected styling.
+   */
+  selected: _propTypes2.default.bool
+} : {};
+
+MenuItem.defaultProps = {
+  component: 'li',
+  role: 'menuitem',
+  selected: false
+};
+
+exports.default = (0, _withStyles2.default)(styles, { name: 'MuiMenuItem' })(MenuItem);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/process/browser.js")))
+
+/***/ }),
+
 /***/ "./node_modules/material-ui/Menu/MenuList.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22853,6 +23343,47 @@ MenuList.propTypes = process.env.NODE_ENV !== "production" ? {
 
 exports.default = MenuList;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/Menu/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Menu = __webpack_require__("./node_modules/material-ui/Menu/Menu.js");
+
+Object.defineProperty(exports, 'default', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Menu).default;
+  }
+});
+
+var _MenuList = __webpack_require__("./node_modules/material-ui/Menu/MenuList.js");
+
+Object.defineProperty(exports, 'MenuList', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_MenuList).default;
+  }
+});
+
+var _MenuItem = __webpack_require__("./node_modules/material-ui/Menu/MenuItem.js");
+
+Object.defineProperty(exports, 'MenuItem', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_MenuItem).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 
@@ -25667,6 +26198,29 @@ exports.default = SelectInput;
 
 /***/ }),
 
+/***/ "./node_modules/material-ui/Select/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Select = __webpack_require__("./node_modules/material-ui/Select/Select.js");
+
+Object.defineProperty(exports, 'default', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Select).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
 /***/ "./node_modules/material-ui/SvgIcon/SvgIcon.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26589,6 +27143,301 @@ exports.default = RefHolder;
 
 /***/ }),
 
+/***/ "./node_modules/material-ui/internal/SwitchBase.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.styles = undefined;
+
+var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _objectWithoutProperties2 = __webpack_require__("./node_modules/babel-runtime/helpers/objectWithoutProperties.js");
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _getPrototypeOf = __webpack_require__("./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = __webpack_require__("./node_modules/babel-runtime/helpers/classCallCheck.js");
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__("./node_modules/babel-runtime/helpers/createClass.js");
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__("./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__("./node_modules/babel-runtime/helpers/inherits.js");
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__("./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__("./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _CheckBoxOutlineBlank = __webpack_require__("./node_modules/material-ui/internal/svg-icons/CheckBoxOutlineBlank.js");
+
+var _CheckBoxOutlineBlank2 = _interopRequireDefault(_CheckBoxOutlineBlank);
+
+var _CheckBox = __webpack_require__("./node_modules/material-ui/internal/svg-icons/CheckBox.js");
+
+var _CheckBox2 = _interopRequireDefault(_CheckBox);
+
+var _withStyles = __webpack_require__("./node_modules/material-ui/styles/withStyles.js");
+
+var _withStyles2 = _interopRequireDefault(_withStyles);
+
+var _IconButton = __webpack_require__("./node_modules/material-ui/IconButton/index.js");
+
+var _IconButton2 = _interopRequireDefault(_IconButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = exports.styles = {
+  root: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    transition: 'none'
+  },
+  input: {
+    cursor: 'inherit',
+    position: 'absolute',
+    opacity: 0,
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    margin: 0,
+    padding: 0
+  },
+  default: {},
+  checked: {},
+  disabled: {}
+};
+
+/**
+ * @ignore - internal component.
+ */
+// @inheritedComponent IconButton
+
+var SwitchBase = function (_React$Component) {
+  (0, _inherits3.default)(SwitchBase, _React$Component);
+
+  function SwitchBase(props, context) {
+    (0, _classCallCheck3.default)(this, SwitchBase);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (SwitchBase.__proto__ || (0, _getPrototypeOf2.default)(SwitchBase)).call(this, props, context));
+
+    _this.state = {};
+    _this.input = null;
+    _this.isControlled = null;
+
+    _this.handleInputChange = function (event) {
+      var checked = event.target.checked;
+
+      if (!_this.isControlled) {
+        _this.setState({ checked: checked });
+      }
+
+      if (_this.props.onChange) {
+        _this.props.onChange(event, checked);
+      }
+    };
+
+    _this.isControlled = props.checked != null;
+    if (!_this.isControlled) {
+      // not controlled, use internal state
+      _this.state.checked = props.defaultChecked !== undefined ? props.defaultChecked : false;
+    }
+    return _this;
+  }
+
+  (0, _createClass3.default)(SwitchBase, [{
+    key: 'render',
+    value: function render() {
+      var _classNames;
+
+      var _props = this.props,
+          checkedProp = _props.checked,
+          checkedIcon = _props.checkedIcon,
+          classes = _props.classes,
+          classNameProp = _props.className,
+          disabledProp = _props.disabled,
+          iconProp = _props.icon,
+          id = _props.id,
+          inputProps = _props.inputProps,
+          inputRef = _props.inputRef,
+          name = _props.name,
+          onChange = _props.onChange,
+          tabIndex = _props.tabIndex,
+          type = _props.type,
+          value = _props.value,
+          other = (0, _objectWithoutProperties3.default)(_props, ['checked', 'checkedIcon', 'classes', 'className', 'disabled', 'icon', 'id', 'inputProps', 'inputRef', 'name', 'onChange', 'tabIndex', 'type', 'value']);
+      var muiFormControl = this.context.muiFormControl;
+
+      var disabled = disabledProp;
+
+      if (muiFormControl) {
+        if (typeof disabled === 'undefined') {
+          disabled = muiFormControl.disabled;
+        }
+      }
+
+      var checked = this.isControlled ? checkedProp : this.state.checked;
+      var className = (0, _classnames2.default)(classes.root, classes.default, classNameProp, (_classNames = {}, (0, _defineProperty3.default)(_classNames, classes.checked, checked), (0, _defineProperty3.default)(_classNames, classes.disabled, disabled), _classNames));
+
+      var icon = checked ? checkedIcon : iconProp;
+
+      var hasLabelFor = type === 'checkbox' || type === 'radio';
+
+      return _react2.default.createElement(
+        _IconButton2.default,
+        (0, _extends3.default)({
+          component: 'span',
+          className: className,
+          disabled: disabled,
+          tabIndex: null,
+          role: undefined
+        }, other),
+        icon,
+        _react2.default.createElement('input', (0, _extends3.default)({
+          id: hasLabelFor && id,
+          type: type,
+          name: name,
+          checked: checked,
+          onChange: this.handleInputChange,
+          className: classes.input,
+          disabled: disabled,
+          tabIndex: tabIndex,
+          value: value,
+          ref: inputRef
+        }, inputProps))
+      );
+    }
+  }]);
+  return SwitchBase;
+}(_react2.default.Component);
+
+// NB: If changed, please update Checkbox, Switch and Radio
+// so that the API documentation is updated.
+
+
+SwitchBase.propTypes = process.env.NODE_ENV !== "production" ? {
+  /**
+   * If `true`, the component is checked.
+   */
+  checked: _propTypes2.default.oneOfType([_propTypes2.default.bool, _propTypes2.default.string]),
+  /**
+   * The icon to display when the component is checked.
+   */
+  checkedIcon: _propTypes2.default.node,
+  /**
+   * Useful to extend the style applied to components.
+   */
+  classes: _propTypes2.default.object.isRequired,
+  /**
+   * @ignore
+   */
+  className: _propTypes2.default.string,
+  /**
+   * @ignore
+   */
+  defaultChecked: _propTypes2.default.bool,
+  /**
+   * If `true`, the switch will be disabled.
+   */
+  disabled: _propTypes2.default.bool,
+  /**
+   * If `true`, the ripple effect will be disabled.
+   */
+  disableRipple: _propTypes2.default.bool,
+  /**
+   * The icon to display when the component is unchecked.
+   */
+  icon: _propTypes2.default.node,
+  /**
+   * The id of the `input` element.
+   */
+  id: _propTypes2.default.string,
+  /**
+   * If `true`, the component appears indeterminate.
+   */
+  indeterminate: _propTypes2.default.bool,
+  /**
+   * The icon to display when the component is indeterminate.
+   */
+  indeterminateIcon: _propTypes2.default.node,
+  /**
+   * Properties applied to the `input` element.
+   */
+  inputProps: _propTypes2.default.object,
+  /**
+   * Use that property to pass a ref callback to the native input component.
+   */
+  inputRef: _propTypes2.default.func,
+  /*
+   * @ignore
+   */
+  name: _propTypes2.default.string,
+  /**
+   * Callback fired when the state is changed.
+   *
+   * @param {object} event The event source of the callback
+   * @param {boolean} checked The `checked` value of the switch
+   */
+  onChange: _propTypes2.default.func,
+  /**
+   * @ignore
+   */
+  tabIndex: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+  /**
+   * The input component property `type`.
+   */
+  type: _propTypes2.default.string,
+  /**
+   * The value of the component.
+   */
+  value: _propTypes2.default.string
+} : {};
+
+SwitchBase.defaultProps = {
+  checkedIcon: _react2.default.createElement(_CheckBox2.default, null),
+  icon: _react2.default.createElement(_CheckBoxOutlineBlank2.default, null),
+  type: 'checkbox'
+};
+
+SwitchBase.contextTypes = {
+  muiFormControl: _propTypes2.default.object
+};
+
+exports.default = (0, _withStyles2.default)(styles, { name: 'MuiSwitchBase' })(SwitchBase);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/process/browser.js")))
+
+/***/ }),
+
 /***/ "./node_modules/material-ui/internal/svg-icons/ArrowDropDown.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26630,6 +27479,135 @@ ArrowDropDown = (0, _pure2.default)(ArrowDropDown);
 ArrowDropDown.muiName = 'SvgIcon';
 
 exports.default = ArrowDropDown;
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/internal/svg-icons/CheckBox.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pure = __webpack_require__("./node_modules/recompose/pure.js");
+
+var _pure2 = _interopRequireDefault(_pure);
+
+var _SvgIcon = __webpack_require__("./node_modules/material-ui/SvgIcon/index.js");
+
+var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @ignore - internal component.
+ */
+var _ref = _react2.default.createElement('path', { d: 'M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' });
+
+var CheckBox = function CheckBox(props) {
+  return _react2.default.createElement(
+    _SvgIcon2.default,
+    props,
+    _ref
+  );
+};
+CheckBox = (0, _pure2.default)(CheckBox);
+CheckBox.muiName = 'SvgIcon';
+
+exports.default = CheckBox;
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/internal/svg-icons/CheckBoxOutlineBlank.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pure = __webpack_require__("./node_modules/recompose/pure.js");
+
+var _pure2 = _interopRequireDefault(_pure);
+
+var _SvgIcon = __webpack_require__("./node_modules/material-ui/SvgIcon/index.js");
+
+var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @ignore - internal component.
+ */
+var _ref = _react2.default.createElement('path', { d: 'M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z' });
+
+var CheckBoxOutlineBlank = function CheckBoxOutlineBlank(props) {
+  return _react2.default.createElement(
+    _SvgIcon2.default,
+    props,
+    _ref
+  );
+};
+CheckBoxOutlineBlank = (0, _pure2.default)(CheckBoxOutlineBlank);
+CheckBoxOutlineBlank.muiName = 'SvgIcon';
+
+exports.default = CheckBoxOutlineBlank;
+
+/***/ }),
+
+/***/ "./node_modules/material-ui/internal/svg-icons/IndeterminateCheckBox.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pure = __webpack_require__("./node_modules/recompose/pure.js");
+
+var _pure2 = _interopRequireDefault(_pure);
+
+var _SvgIcon = __webpack_require__("./node_modules/material-ui/SvgIcon/index.js");
+
+var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @ignore - internal component.
+ */
+var _ref = _react2.default.createElement('path', { d: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z' });
+
+var IndeterminateCheckBox = function IndeterminateCheckBox(props) {
+  return _react2.default.createElement(
+    _SvgIcon2.default,
+    props,
+    _ref
+  );
+};
+IndeterminateCheckBox = (0, _pure2.default)(IndeterminateCheckBox);
+IndeterminateCheckBox.muiName = 'SvgIcon';
+
+exports.default = IndeterminateCheckBox;
 
 /***/ }),
 
@@ -75042,6 +76020,334 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./src/components/AddTask.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__("./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__("./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = __webpack_require__("./node_modules/react-redux/es/index.js");
+
+var _reduxRestFetcher = __webpack_require__("./node_modules/redux-rest-fetcher/dist/index.js");
+
+var _reduxRestFetcher2 = _interopRequireDefault(_reduxRestFetcher);
+
+var _Dialog = __webpack_require__("./node_modules/material-ui/Dialog/index.js");
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
+
+var _TextField = __webpack_require__("./node_modules/material-ui/TextField/index.js");
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _Button = __webpack_require__("./node_modules/material-ui/Button/index.js");
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _List = __webpack_require__("./node_modules/material-ui/List/index.js");
+
+var _List2 = _interopRequireDefault(_List);
+
+var _Select = __webpack_require__("./node_modules/material-ui/Select/index.js");
+
+var _Select2 = _interopRequireDefault(_Select);
+
+var _Menu = __webpack_require__("./node_modules/material-ui/Menu/index.js");
+
+var _Form = __webpack_require__("./node_modules/material-ui/Form/index.js");
+
+var _Checkbox = __webpack_require__("./node_modules/material-ui/Checkbox/index.js");
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = __webpack_require__("./node_modules/react-hot-loader/index.js").enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _c = {
+  NAME: 'name',
+  DESC: 'description',
+  TAGS: 'tags',
+  ASIGNEE: 'asignee',
+  BLOCK: 'blocked_by'
+};
+
+var AddTask = function (_Component) {
+  _inherits(AddTask, _Component);
+
+  function AddTask(props) {
+    var _this$state2;
+
+    _classCallCheck(this, AddTask);
+
+    var _this = _possibleConstructorReturn(this, (AddTask.__proto__ || Object.getPrototypeOf(AddTask)).call(this, props));
+
+    _this.onInput = function (what) {
+      return function (event) {
+        _this.setState(_defineProperty({}, what, event.target.value));
+      };
+    };
+
+    _this.submit = function () {
+      var _this$state = _this.state,
+          name = _this$state[_c.NAME],
+          description = _this$state[_c.DESC],
+          tags = _this$state[_c.TAGS],
+          blockedBy = _this$state[_c.BLOCK];
+
+      var asignee = null;
+      var task = {
+        name: name,
+        description: description,
+        status: 'TODO',
+        tags: tags,
+        asignee: asignee,
+        blockedBy: blockedBy
+      };
+      console.log(task);
+      _reduxRestFetcher2.default.task({ body: task });
+    };
+
+    _this.handleTagChange = function (id) {
+      return function (e) {
+        var tags = _this.state[_c.TAGS];
+        if (e.target.checked) tags.push(id);else {
+          tags.splice(tags.indexOf(id), 1);
+        }
+        _this.setState(_defineProperty({}, _c.TAGS, tags));
+      };
+    };
+
+    _this.handleBlockbyChange = function (id) {
+      return function (e) {
+        var block = _this.state[_c.BLOCK];
+        if (e.target.checked) block.push(id);else {
+          block.splice(block.indexOf(id), 1);
+        }
+        _this.setState(_defineProperty({}, _c.BLOCK, block));
+      };
+    };
+
+    _this.handleAssignee = function (e) {
+      var value = e.target.value;
+
+      if (value !== '' && value) {
+        _this.setState(_defineProperty({}, _c.ASIGNEE, value));
+      } else _this.setState(_defineProperty({}, _c.ASIGNEE, ''));
+    };
+
+    _this.state = (_this$state2 = {}, _defineProperty(_this$state2, _c.NAME, ''), _defineProperty(_this$state2, _c.DESC, ''), _defineProperty(_this$state2, _c.TAGS, []), _defineProperty(_this$state2, _c.ASIGNEE, ''), _defineProperty(_this$state2, _c.BLOCK, []), _this$state2);
+    return _this;
+  }
+
+  _createClass(AddTask, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      console.log(this);
+
+      var _props = this.props,
+          handleClose = _props.handleClose,
+          users = _props.users.data,
+          tags = _props.tags.data,
+          tasks = _props.tasks.data,
+          _ = _props.dispatch,
+          other = _objectWithoutProperties(_props, ['handleClose', 'users', 'tags', 'tasks', 'dispatch']);
+
+      return _react2.default.createElement(
+        _Dialog2.default,
+        _extends({ onClose: handleClose }, other),
+        _react2.default.createElement(
+          _Dialog.DialogTitle,
+          null,
+          'AddTask'
+        ),
+        _react2.default.createElement(
+          'div',
+          { style: { display: 'flex', flexDirection: 'column' } },
+          _react2.default.createElement(_TextField2.default, {
+            id: _c.NAME,
+            label: _c.NAME,
+            value: this.state[_c.NAME],
+            onChange: this.onInput(_c.NAME),
+            margin: 'normal'
+          }),
+          _react2.default.createElement(_TextField2.default, {
+            id: _c.DESC,
+            label: _c.DESC,
+            value: this.state[_c.DESC],
+            onChange: this.onInput(_c.DESC),
+            margin: 'normal'
+          }),
+          _react2.default.createElement(
+            _Form.FormGroup,
+            null,
+            !!tags && tags.map(function (t) {
+              return _react2.default.createElement(_Form.FormControlLabel, {
+                key: t.name + '_' + t.id,
+                control: _react2.default.createElement(_Checkbox2.default, {
+                  checked: _this2.state.tags && _this2.state.tags.indexOf(t.id) !== -1,
+                  onChange: _this2.handleTagChange(t.id),
+                  value: '' + t.id
+                }),
+                label: t.name
+              });
+            })
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              'h4',
+              null,
+              'Asigne to:'
+            ),
+            _react2.default.createElement(
+              _Select2.default,
+              { value: this.state[_c.ASIGNEE], onChange: this.handleAssignee },
+              !!users && users.map(function (t) {
+                return _react2.default.createElement(
+                  _Menu.MenuItem,
+                  { value: t.id, key: 'tag_key_' + t.id },
+                  t.name
+                );
+              })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              'h4',
+              null,
+              'Blocked by:'
+            ),
+            _react2.default.createElement(
+              _List2.default,
+              null,
+              !!tasks && tasks.map(function (t) {
+                return _react2.default.createElement(
+                  _List.ListItem,
+                  {
+                    key: 'tag_key_' + t.id,
+                    dense: true,
+                    button: true,
+                    onClick: _this2.handleBlockbyChange(t.id)
+                  },
+                  _react2.default.createElement(_List.ListItemText, { primary: t.name }),
+                  _react2.default.createElement(_Checkbox2.default, {
+                    checked: _this2.state[_c.BLOCK].indexOf(t.id) !== -1,
+                    tabIndex: -1,
+                    disableRipple: true
+                  })
+                );
+              })
+            )
+          ),
+          _react2.default.createElement(
+            _Button2.default,
+            { onClick: this.submit },
+            'Submit'
+          )
+        )
+      );
+    }
+  }, {
+    key: '__reactstandin__regenerateByEval',
+    value: function __reactstandin__regenerateByEval(key, code) {
+      this[key] = eval(code);
+    }
+  }]);
+
+  return AddTask;
+}(_react.Component);
+
+AddTask.propTypes = {
+  handleClose: _propTypes2.default.func.isRequired
+};
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    tags: state.api.tags.data,
+    users: state.api.users.data,
+    tasks: state.api.tasks.data
+  };
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps)(AddTask);
+
+exports.default = _default;
+
+/* <Select value="">
+            {!!tags &&
+              tags.map(t => (
+                <MenuItem value={t.id} key={`tag_key_${t.id}`}>
+                  {t.name}
+                </MenuItem>
+              ))}
+          </Select> */
+/* <Select value={this.state[_c.BLOCK]}>
+              {!!tasks &&
+                tasks.map(t => (
+                  <MenuItem value={t.id} key={`tag_key_${t.id}`}>
+                    {t.name}
+                  </MenuItem>
+                ))}
+            </Select> */
+
+;
+
+(function () {
+  var reactHotLoader = __webpack_require__("./node_modules/react-hot-loader/index.js").default;
+
+  var leaveModule = __webpack_require__("./node_modules/react-hot-loader/index.js").leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(_c, '_c', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
+  reactHotLoader.register(AddTask, 'AddTask', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
+  reactHotLoader.register(mapStateToProps, 'mapStateToProps', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
+  reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
+  leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
 /***/ "./src/components/Column.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75235,6 +76541,10 @@ var _Column = __webpack_require__("./src/components/Column.js");
 
 var _Column2 = _interopRequireDefault(_Column);
 
+var _AddTask = __webpack_require__("./src/components/AddTask.js");
+
+var _AddTask2 = _interopRequireDefault(_AddTask);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function () {
@@ -75250,6 +76560,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 /* import api from 'redux-rest-fetcher'; */
 
+
+var Aux = function Aux(props) {
+  return props.children;
+};
 
 var _c = ['TODO', 'IN_PROGRESS', 'DONE'];
 
@@ -75271,22 +76585,18 @@ var styles = function styles() {
 var Kanban = function (_Component) {
   _inherits(Kanban, _Component);
 
-  function Kanban() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function Kanban(props) {
     _classCallCheck(this, Kanban);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (Kanban.__proto__ || Object.getPrototypeOf(Kanban)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Kanban.__proto__ || Object.getPrototypeOf(Kanban)).call.apply(_ref, [this].concat(args))), _this), _this.addTask = function (name) {
+    _this.addTask = function (name) {
       return function () {
-        console.log(name);
+        _this.setState({ addTaskModal: true });
       };
-    }, _this.getTasks = function (data) {
+    };
+
+    _this.getTasks = function (data) {
       if (!data) return [[]];
       var out = {};
       data.forEach(function (d) {
@@ -75300,13 +76610,16 @@ var Kanban = function (_Component) {
         if (!out[c]) out[c] = [];
       });
       return out;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this.closeAddTask = function () {
+      _this.setState({ addTaskModal: false });
+    };
+
+    _this.state = { addTaskModal: false };
+    return _this;
   }
-  /* constructor(props) {
-    super(props);
-    this.state = { knb: undefined };
-  }
-  componentWillReceiveProps(next) {
+  /* componentWillReceiveProps(next) {
     console.log(next);
     if (!this.props.tasks.data && next.tasks.data) {
       this.setState({ knb: this.getTasks(next.tasks.data) });
@@ -75327,32 +76640,37 @@ var Kanban = function (_Component) {
 
       if (!knb) return _react2.default.createElement('div', null);
       return _react2.default.createElement(
-        _Card2.default,
-        { style: style },
+        Aux,
+        null,
         _react2.default.createElement(
-          _Card.CardContent,
-          { className: classes.card },
-          Object.keys(knb).map(function (e) {
-            return _react2.default.createElement(
-              _Column2.default,
-              { className: classes.list, name: e, key: e },
-              knb[e].map(function (t, i) {
-                return _react2.default.createElement(_Task2.default, {
-                  from: e,
-                  index: i,
-                  key: t.name.replace(' ', '') + '_' + (i + 1232),
-                  id: e + '_' + i,
-                  data: t
-                });
-              }),
-              _react2.default.createElement(
-                _Button2.default,
-                { className: classes.addButton, onClick: _this2.addTask(e) },
-                'Add'
-              )
-            );
-          })
-        )
+          _Card2.default,
+          { style: style },
+          _react2.default.createElement(
+            _Card.CardContent,
+            { className: classes.card },
+            Object.keys(knb).map(function (e) {
+              return _react2.default.createElement(
+                _Column2.default,
+                { className: classes.list, name: e, key: e },
+                knb[e].map(function (t, i) {
+                  return _react2.default.createElement(_Task2.default, {
+                    from: e,
+                    index: i,
+                    key: t.name.replace(' ', '') + '_' + (i + 1232),
+                    id: e + '_' + i,
+                    data: t
+                  });
+                }),
+                e === 'TODO' && _react2.default.createElement(
+                  _Button2.default,
+                  { className: classes.addButton, onClick: _this2.addTask(e) },
+                  'Add'
+                )
+              );
+            })
+          )
+        ),
+        _react2.default.createElement(_AddTask2.default, { open: this.state.addTaskModal, handleClose: this.closeAddTask })
       );
     }
   }, {
@@ -75394,6 +76712,7 @@ exports.default = _default;
     return;
   }
 
+  reactHotLoader.register(Aux, 'Aux', '/prpa-projects/www/jobtests/ag04/src/components/Kanban.js');
   reactHotLoader.register(_c, '_c', '/prpa-projects/www/jobtests/ag04/src/components/Kanban.js');
   reactHotLoader.register(styles, 'styles', '/prpa-projects/www/jobtests/ag04/src/components/Kanban.js');
   reactHotLoader.register(Kanban, 'Kanban', '/prpa-projects/www/jobtests/ag04/src/components/Kanban.js');
@@ -75546,6 +76865,9 @@ var Login = function (_Component) {
   return Login;
 }(_react.Component);
 
+Login.propTypes = {
+  handleClose: _propTypes2.default.func.isRequired
+};
 var _default = Login;
 exports.default = _default;
 ;
@@ -75967,10 +77289,7 @@ var source = {
 
 var collect = function collect(connect, monitor) {
   return {
-    // Call this function inside render()
-    // to let React DnD handle the drag events:
     connectdg: connect.dragSource() || 0,
-    // You can ask the monitor about the current drag state:
     isdragging: monitor.isDragging().toString()
   };
 };

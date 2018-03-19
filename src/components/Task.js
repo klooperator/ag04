@@ -14,10 +14,7 @@ const source = {
 };
 
 const collect = (connect, monitor) => ({
-  // Call this function inside render()
-  // to let React DnD handle the drag events:
   connectdg: connect.dragSource() || 0,
-  // You can ask the monitor about the current drag state:
   isdragging: monitor.isDragging().toString(),
 });
 

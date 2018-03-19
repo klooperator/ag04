@@ -58,4 +58,7 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+};
 export default Login;
