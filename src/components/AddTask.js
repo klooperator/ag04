@@ -109,7 +109,6 @@ class AddTask extends Component {
   };
 
   render() {
-    console.log(this);
     const {
       handleClose,
       users: { data: users },

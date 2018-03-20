@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5d492c2f65099dcb844e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "357d7234d98242ab675f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -76010,11 +76010,13 @@ var token = function token(o) {
       options = o.options;
 
   var state = getState();
+  /* eslint-disable  */
   var _state$api = state.api,
       sign_up = _state$api.sign_up,
       sign_in = _state$api.sign_in;
 
-  var t = sign_in.data && sign_in.data.data || sign_up.data && sign_up.data.data ? sign_in.data.data.token || sign_up.data.data.token : 'no---token';
+  var t = 'no---token---';
+  if (sign_in.data && sign_in.data.data) t = sign_in.data.data.token;else if (sign_up.data && sign_up.data.data) t = sign_up.data.data.token;
   options.headers.Authorization = 'Bearer ' + t;
 };
 var _default = token;
@@ -76166,8 +76168,6 @@ var AddTask = function (_Component) {
     key: 'render',
     value: function render() {
       var _this2 = this;
-
-      console.log(this);
 
       var _props = this.props,
           handleClose = _props.handleClose,
@@ -76581,6 +76581,18 @@ var _Button = __webpack_require__("./node_modules/material-ui/Button/index.js");
 
 var _Button2 = _interopRequireDefault(_Button);
 
+var _Form = __webpack_require__("./node_modules/material-ui/Form/index.js");
+
+var _Select = __webpack_require__("./node_modules/material-ui/Select/index.js");
+
+var _Select2 = _interopRequireDefault(_Select);
+
+var _Menu = __webpack_require__("./node_modules/material-ui/Menu/index.js");
+
+var _Checkbox = __webpack_require__("./node_modules/material-ui/Checkbox/index.js");
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
+
 var _Task = __webpack_require__("./src/components/Task.js");
 
 var _Task2 = _interopRequireDefault(_Task);
@@ -76624,6 +76636,10 @@ var styles = function styles() {
     list: {
       display: 'flex',
       flexDirection: 'column'
+    },
+    tags: {
+      display: 'flex',
+      flexDirection: 'row'
     }
   };
 };
@@ -76662,7 +76678,48 @@ var Kanban = function (_Component) {
       _this.setState({ addTaskModal: false });
     };
 
-    _this.state = { addTaskModal: false };
+    _this.checkFilters = function (task) {
+      var _this$state = _this.state,
+          userFilter = _this$state.userFilter,
+          tagFilter = _this$state.tagFilter;
+
+      var out = true;
+      if (userFilter && userFilter !== task.assignee) return false;
+      if (tagFilter.length > 0) {
+        task.tags.forEach(function (e) {
+          if (tagFilter.indexOf(e) !== -1) out = false;
+        });
+      }
+      return out;
+    };
+
+    _this.handleTagChange = function (id) {
+      return function (e) {
+        var tagFilter = _this.state.tagFilter;
+
+        if (!e.target.checked) {
+          tagFilter.push(id);
+        } else {
+          tagFilter.splice(tagFilter.indexOf(id), 1);
+        }
+        console.log(tagFilter);
+        _this.setState({ tagFilter: tagFilter });
+      };
+    };
+
+    _this.handleAssignee = function (e) {
+      var value = e.target.value;
+
+      if (value !== '' && value) {
+        _this.setState({ userFilter: value !== -1 ? value : undefined });
+      }
+    };
+
+    _this.state = {
+      addTaskModal: false,
+      userFilter: undefined,
+      tagFilter: []
+    };
     return _this;
   }
 
@@ -76671,15 +76728,57 @@ var Kanban = function (_Component) {
     value: function render() {
       var _this2 = this;
 
+      console.log(this);
       var _props = this.props,
           classes = _props.classes,
           style = _props.style,
-          knb = _props.knb;
+          knb = _props.knb,
+          tags = _props.tags.data,
+          users = _props.users.data;
 
       if (!knb) return _react2.default.createElement('div', null);
       return _react2.default.createElement(
         Aux,
         null,
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            _Form.FormGroup,
+            { className: classes.tags },
+            !!tags && tags.map(function (t) {
+              return _react2.default.createElement(_Form.FormControlLabel, {
+                key: t.name + '_' + t.id,
+                control: _react2.default.createElement(_Checkbox2.default, {
+                  checked: _this2.state.tagFilter.indexOf(t.id) === -1,
+                  onChange: _this2.handleTagChange(t.id),
+                  value: '' + t.id
+                }),
+                label: t.name
+              });
+            })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            _Select2.default,
+            {
+              value: this.state.userFilter || '',
+              onChange: this.handleAssignee,
+              style: { width: '250px' },
+              displayEmpty: true
+            },
+            !!users && [{ id: -1, name: '-' }].concat(users).map(function (t) {
+              return _react2.default.createElement(
+                _Menu.MenuItem,
+                { value: t.id, key: 'tag_key_' + t.id },
+                t.name
+              );
+            })
+          )
+        ),
         _react2.default.createElement(
           _Card2.default,
           { style: style },
@@ -76691,14 +76790,17 @@ var Kanban = function (_Component) {
                 _Column2.default,
                 { className: classes.list, name: e, key: e },
                 knb[e] && knb[e].map(function (t, i) {
-                  return _react2.default.createElement(_Task2.default, {
-                    from: e,
-                    index: i,
-                    key: t.name.replace(' ', '') + '_' + (i + 1232),
-                    id: t.id,
-                    data: t,
-                    openEdit: _this2.addTask(t)
-                  });
+                  if (_this2.checkFilters(t)) {
+                    return _react2.default.createElement(_Task2.default, {
+                      from: e,
+                      index: i,
+                      key: t.name.replace(' ', '') + '_' + (i + 1232),
+                      id: t.id,
+                      data: t,
+                      openEdit: _this2.addTask(t)
+                    });
+                  }
+                  return undefined;
                 }),
                 e === 'TODO' && _react2.default.createElement(
                   _Button2.default,
@@ -76732,12 +76834,16 @@ Kanban.defaultProps = {
 Kanban.propTypes = {
   knb: _propTypes2.default.object.isRequired,
   classes: _propTypes2.default.object.isRequired,
-  style: _propTypes2.default.object
+  style: _propTypes2.default.object,
+  users: _propTypes2.default.object.isRequired,
+  tags: _propTypes2.default.object.isRequired
 };
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    knb: state.knb
+    knb: state.knb,
+    users: state.api.users.data,
+    tags: state.api.tags.data
   };
 };
 
