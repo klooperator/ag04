@@ -6,7 +6,7 @@ import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
@@ -25,8 +25,8 @@ const _c = {
   NAME: 'name',
   DESC: 'description',
   TAGS: 'tags',
-  ASIGNEE: 'asignee',
-  BLOCK: 'blocked_by',
+  ASIGNEE: 'assignee',
+  BLOCK: 'blockedBy',
 };
 
 class AddTask extends Component {
@@ -41,6 +41,18 @@ class AddTask extends Component {
       [_c.BLOCK]: task && task[_c.BLOCK] ? task[_c.BLOCK] : [],
     };
   }
+
+  componentWillReceiveProps(next) {
+    if (next.task !== this.props.task) {
+      this.setState({
+        [_c.NAME]: next.task && next.task[_c.NAME] ? next.task[_c.NAME] : '',
+        [_c.DESC]: next.task && next.task[_c.DESC] ? next.task[_c.DESC] : '',
+        [_c.TAGS]: next.task && next.task[_c.TAGS] ? next.task[_c.TAGS] : [],
+        [_c.ASIGNEE]: next.task && next.task[_c.ASIGNEE] ? next.task[_c.ASIGNEE] : '',
+        [_c.BLOCK]: next.task && next.task[_c.BLOCK] ? next.task[_c.BLOCK] : [],
+      });
+    }
+  }
   onInput = what => (event) => {
     this.setState({ [what]: event.target.value });
   };
@@ -51,18 +63,24 @@ class AddTask extends Component {
       [_c.DESC]: description,
       [_c.TAGS]: tags,
       [_c.BLOCK]: blockedBy,
+      [_c.ASIGNEE]: assignee,
     } = this.state;
-    /* const asignee = null; */
+    /* const assignee = null; */
     const task = {
       name,
       description,
       status: 'TODO',
       tags,
-      /* asignee, */
+      assignee,
       blockedBy,
     };
-    console.log(task);
-    api.task({ body: task });
+    if (this.props.task !== true && this.props.task) {
+      task.id = this.props.task.id;
+      api.update_task({ body: task, task_id: task.id });
+    } else {
+      api.task({ body: task });
+    }
+    this.props.handleClose();
   };
 
   handleTagChange = id => (e) => {
@@ -98,12 +116,13 @@ class AddTask extends Component {
       tags: { data: tags },
       tasks: { data: tasks },
       dispatch: _,
+      task,
       classes,
       ...other
     } = this.props;
     return (
       <Dialog PaperProps={{ className: classes.card }} onClose={handleClose} {...other}>
-        <DialogTitle>AddTask</DialogTitle>
+        <DialogTitle>{task && task !== true ? 'Edit task' : 'Add Task'}</DialogTitle>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <TextField
             id={_c.NAME}
@@ -180,6 +199,12 @@ class AddTask extends Component {
 
 AddTask.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  task: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
+  users: PropTypes.object.isRequired,
+  tasks: PropTypes.object.isRequired,
+  tags: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
   tags: state.api.tags.data,
@@ -187,20 +212,3 @@ const mapStateToProps = state => ({
   tasks: state.api.tasks.data,
 });
 export default connect(mapStateToProps)(withStyles(styles)(AddTask));
-
-/* <Select value="">
-            {!!tags &&
-              tags.map(t => (
-                <MenuItem value={t.id} key={`tag_key_${t.id}`}>
-                  {t.name}
-                </MenuItem>
-              ))}
-          </Select> */
-/* <Select value={this.state[_c.BLOCK]}>
-              {!!tasks &&
-                tasks.map(t => (
-                  <MenuItem value={t.id} key={`tag_key_${t.id}`}>
-                    {t.name}
-                  </MenuItem>
-                ))}
-            </Select> */

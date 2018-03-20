@@ -3,28 +3,24 @@ import PropTypes from 'prop-types';
 import { connect as conn } from 'react-redux';
 import { findDOMNode } from 'react-dom';
 import { DropTarget } from 'react-dnd';
+import api from 'redux-rest-fetcher';
 import List from 'material-ui/List';
-import { moveToColumn } from '../store/Knb';
 
 const target = {
   drop(props, monitor, component) {
     const item = monitor.getItem();
-    console.log(item);
     if (item) {
-      const { store: { dispatch }, props: { name } } = component;
-      const payload = {
-        to: name,
-        from: item.from,
-        index: item.index,
-      };
-      dispatch(moveToColumn(payload));
+      const { props: { name } } = component;
+      api.update_task({
+        body: { status: name, name: item.taskName, blockedBy: item.blockedBy },
+        task_id: item.id,
+      });
     }
   },
 };
 
 const collect = (connect, monitor) => ({
   connectdt: connect.dropTarget() || 0,
-  // You can ask the monitor about the current drag state:
   isover: (monitor.isOver() || 0).toString(),
   isovercurrent: (monitor.isOver({ shallow: true }) || 0).toString(),
   candrop: (monitor.canDrop() || 0).toString(),
@@ -43,7 +39,7 @@ const Column = (props) => {
         margin: '5px 20px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        /* justifyContent: 'center', */
         textAlign: 'center',
         border: '1px solid #eee',
       }}
@@ -52,7 +48,7 @@ const Column = (props) => {
       <List
         ref={instance => connectdt(findDOMNode(instance))}
         {...rest}
-        style={{ marginTop: 'auto', minHeight: '300px', minWidth: '250px' }}
+        style={{ /* marginTop: 'auto',  */ minHeight: '300px', minWidth: '250px' }}
       >
         {children}
       </List>

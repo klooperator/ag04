@@ -1,4 +1,4 @@
-import { setTasks } from '../store/Knb';
+import { setTasks, updateTask, addNewTask as addNew } from '../store/Knb';
 
 const _c = ['TODO', 'IN_PROGRESS', 'DONE'];
 
@@ -18,6 +18,14 @@ export const tasks = ({ data: { data }, dispatch }) => {
     });
     dispatch(setTasks(out));
   }
+};
+
+export const taskUpdated = ({ data: { data = {} }, dispatch }) => {
+  dispatch(updateTask(data));
+};
+
+export const addNewTask = ({ data: { data = {} }, dispatch }) => {
+  dispatch(addNew(data));
 };
 
 export default {};

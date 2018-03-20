@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "58d34236cf312fba8e36"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5d492c2f65099dcb844e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -784,7 +784,7 @@ var store = (0, _Store2.default)();
 _reduxRestFetcher2.default.setDispatcher(store.dispatch);
 _reduxRestFetcher2.default.setGetState(store.getState);
 
-/* api.sign_in({ body: { username: 'klo', password: 'test' } }); */
+_reduxRestFetcher2.default.sign_in({ body: { username: 'klo', password: 'test' } });
 
 var CENTRAL_NODE = document.getElementById('app');
 
@@ -75867,14 +75867,16 @@ var _default = {
     options: {
       method: 'post'
     },
-    prefetch: [_prefetch2.default]
+    prefetch: [_prefetch2.default],
+    postfetch: [_postfetch.addNewTask]
   },
   update_task: {
     url: route + 'task/:task_id',
     options: {
       method: 'put'
     },
-    prefetch: [_prefetch2.default]
+    prefetch: [_prefetch2.default],
+    postfetch: [_postfetch.taskUpdated]
   },
   tags: {
     url: route + 'tags',
@@ -75912,7 +75914,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.tasks = undefined;
+exports.addNewTask = exports.taskUpdated = exports.tasks = undefined;
 
 var _Knb = __webpack_require__("./src/store/Knb.js");
 
@@ -75945,6 +75947,22 @@ var tasks = exports.tasks = function tasks(_ref) {
   }
 };
 
+var taskUpdated = exports.taskUpdated = function taskUpdated(_ref2) {
+  var _ref2$data$data = _ref2.data.data,
+      data = _ref2$data$data === undefined ? {} : _ref2$data$data,
+      dispatch = _ref2.dispatch;
+
+  dispatch((0, _Knb.updateTask)(data));
+};
+
+var addNewTask = exports.addNewTask = function addNewTask(_ref3) {
+  var _ref3$data$data = _ref3.data.data,
+      data = _ref3$data$data === undefined ? {} : _ref3$data$data,
+      dispatch = _ref3.dispatch;
+
+  dispatch((0, _Knb.addNewTask)(data));
+};
+
 var _default = {};
 exports.default = _default;
 ;
@@ -75960,6 +75978,8 @@ exports.default = _default;
 
   reactHotLoader.register(_c, '_c', '/prpa-projects/www/jobtests/ag04/src/api/postfetch.js');
   reactHotLoader.register(tasks, 'tasks', '/prpa-projects/www/jobtests/ag04/src/api/postfetch.js');
+  reactHotLoader.register(taskUpdated, 'taskUpdated', '/prpa-projects/www/jobtests/ag04/src/api/postfetch.js');
+  reactHotLoader.register(addNewTask, 'addNewTask', '/prpa-projects/www/jobtests/ag04/src/api/postfetch.js');
   reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/api/postfetch.js');
   leaveModule(module);
 })();
@@ -76111,8 +76131,8 @@ var _c = {
   NAME: 'name',
   DESC: 'description',
   TAGS: 'tags',
-  ASIGNEE: 'asignee',
-  BLOCK: 'blocked_by'
+  ASIGNEE: 'assignee',
+  BLOCK: 'blockedBy'
 };
 
 var AddTask = function (_Component) {
@@ -76134,6 +76154,15 @@ var AddTask = function (_Component) {
   }
 
   _createClass(AddTask, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(next) {
+      if (next.task !== this.props.task) {
+        var _setState;
+
+        this.setState((_setState = {}, _defineProperty(_setState, _c.NAME, next.task && next.task[_c.NAME] ? next.task[_c.NAME] : ''), _defineProperty(_setState, _c.DESC, next.task && next.task[_c.DESC] ? next.task[_c.DESC] : ''), _defineProperty(_setState, _c.TAGS, next.task && next.task[_c.TAGS] ? next.task[_c.TAGS] : []), _defineProperty(_setState, _c.ASIGNEE, next.task && next.task[_c.ASIGNEE] ? next.task[_c.ASIGNEE] : ''), _defineProperty(_setState, _c.BLOCK, next.task && next.task[_c.BLOCK] ? next.task[_c.BLOCK] : []), _setState));
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -76146,8 +76175,9 @@ var AddTask = function (_Component) {
           tags = _props.tags.data,
           tasks = _props.tasks.data,
           _ = _props.dispatch,
+          task = _props.task,
           classes = _props.classes,
-          other = _objectWithoutProperties(_props, ['handleClose', 'users', 'tags', 'tasks', 'dispatch', 'classes']);
+          other = _objectWithoutProperties(_props, ['handleClose', 'users', 'tags', 'tasks', 'dispatch', 'task', 'classes']);
 
       return _react2.default.createElement(
         _Dialog2.default,
@@ -76155,7 +76185,7 @@ var AddTask = function (_Component) {
         _react2.default.createElement(
           _Dialog.DialogTitle,
           null,
-          'AddTask'
+          task && task !== true ? 'Edit task' : 'Add Task'
         ),
         _react2.default.createElement(
           'div',
@@ -76275,19 +76305,25 @@ var _initialiseProps = function _initialiseProps() {
         name = _state[_c.NAME],
         description = _state[_c.DESC],
         tags = _state[_c.TAGS],
-        blockedBy = _state[_c.BLOCK];
-    /* const asignee = null; */
+        blockedBy = _state[_c.BLOCK],
+        assignee = _state[_c.ASIGNEE];
+    /* const assignee = null; */
 
     var task = {
       name: name,
       description: description,
       status: 'TODO',
       tags: tags,
-      /* asignee, */
+      assignee: assignee,
       blockedBy: blockedBy
     };
-    console.log(task);
-    _reduxRestFetcher2.default.task({ body: task });
+    if (_this3.props.task !== true && _this3.props.task) {
+      task.id = _this3.props.task.id;
+      _reduxRestFetcher2.default.update_task({ body: task, task_id: task.id });
+    } else {
+      _reduxRestFetcher2.default.task({ body: task });
+    }
+    _this3.props.handleClose();
   };
 
   this.handleTagChange = function (id) {
@@ -76320,7 +76356,13 @@ var _initialiseProps = function _initialiseProps() {
 };
 
 AddTask.propTypes = {
-  handleClose: _propTypes2.default.func.isRequired
+  handleClose: _propTypes2.default.func.isRequired,
+  task: _propTypes2.default.oneOfType([_propTypes2.default.object, _propTypes2.default.bool]).isRequired,
+  users: _propTypes2.default.object.isRequired,
+  tasks: _propTypes2.default.object.isRequired,
+  tags: _propTypes2.default.object.isRequired,
+  dispatch: _propTypes2.default.func.isRequired,
+  classes: _propTypes2.default.object.isRequired
 };
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -76333,24 +76375,6 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps)((0, _styles.withStyles)(styles)(AddTask));
 
 exports.default = _default;
-
-/* <Select value="">
-            {!!tags &&
-              tags.map(t => (
-                <MenuItem value={t.id} key={`tag_key_${t.id}`}>
-                  {t.name}
-                </MenuItem>
-              ))}
-          </Select> */
-/* <Select value={this.state[_c.BLOCK]}>
-              {!!tasks &&
-                tasks.map(t => (
-                  <MenuItem value={t.id} key={`tag_key_${t.id}`}>
-                    {t.name}
-                  </MenuItem>
-                ))}
-            </Select> */
-
 ;
 
 (function () {
@@ -76401,11 +76425,13 @@ var _reactDom = __webpack_require__("./node_modules/react-dom/index.js");
 
 var _reactDnd = __webpack_require__("./node_modules/react-dnd/lib/index.js");
 
+var _reduxRestFetcher = __webpack_require__("./node_modules/redux-rest-fetcher/dist/index.js");
+
+var _reduxRestFetcher2 = _interopRequireDefault(_reduxRestFetcher);
+
 var _List = __webpack_require__("./node_modules/material-ui/List/index.js");
 
 var _List2 = _interopRequireDefault(_List);
-
-var _Knb = __webpack_require__("./src/store/Knb.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -76420,17 +76446,13 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var target = {
   drop: function drop(props, monitor, component) {
     var item = monitor.getItem();
-    console.log(item);
     if (item) {
-      var dispatch = component.store.dispatch,
-          name = component.props.name;
+      var name = component.props.name;
 
-      var payload = {
-        to: name,
-        from: item.from,
-        index: item.index
-      };
-      dispatch((0, _Knb.moveToColumn)(payload));
+      _reduxRestFetcher2.default.update_task({
+        body: { status: name, name: item.taskName, blockedBy: item.blockedBy },
+        task_id: item.id
+      });
     }
   }
 };
@@ -76438,7 +76460,6 @@ var target = {
 var collect = function collect(connect, monitor) {
   return {
     connectdt: connect.dropTarget() || 0,
-    // You can ask the monitor about the current drag state:
     isover: (monitor.isOver() || 0).toString(),
     isovercurrent: (monitor.isOver({ shallow: true }) || 0).toString(),
     candrop: (monitor.canDrop() || 0).toString(),
@@ -76461,7 +76482,7 @@ var Column = function Column(props) {
         margin: '5px 20px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        /* justifyContent: 'center', */
         textAlign: 'center',
         border: '1px solid #eee'
       }
@@ -76478,7 +76499,7 @@ var Column = function Column(props) {
           return connectdt((0, _reactDom.findDOMNode)(instance));
         }
       }, rest, {
-        style: { marginTop: 'auto', minHeight: '300px', minWidth: '250px' }
+        style: { /* marginTop: 'auto',  */minHeight: '300px', minWidth: '250px' }
       }),
       children
     )
@@ -76585,8 +76606,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-/* import api from 'redux-rest-fetcher'; */
-
 
 var Aux = function Aux(props) {
   return props.children;
@@ -76617,9 +76636,9 @@ var Kanban = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Kanban.__proto__ || Object.getPrototypeOf(Kanban)).call(this, props));
 
-    _this.addTask = function (name) {
+    _this.addTask = function (data) {
       return function () {
-        _this.setState({ addTaskModal: true });
+        _this.setState({ addTaskModal: data });
       };
     };
 
@@ -76646,24 +76665,16 @@ var Kanban = function (_Component) {
     _this.state = { addTaskModal: false };
     return _this;
   }
-  /* componentWillReceiveProps(next) {
-    console.log(next);
-    if (!this.props.tasks.data && next.tasks.data) {
-      this.setState({ knb: this.getTasks(next.tasks.data) });
-    }
-  } */
 
   _createClass(Kanban, [{
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      console.log(this);
       var _props = this.props,
           classes = _props.classes,
           style = _props.style,
           knb = _props.knb;
-      /* const { knb } = this.state; */
 
       if (!knb) return _react2.default.createElement('div', null);
       return _react2.default.createElement(
@@ -76675,29 +76686,34 @@ var Kanban = function (_Component) {
           _react2.default.createElement(
             _Card.CardContent,
             { className: classes.card },
-            Object.keys(knb).map(function (e) {
+            _c.map(function (e) {
               return _react2.default.createElement(
                 _Column2.default,
                 { className: classes.list, name: e, key: e },
-                knb[e].map(function (t, i) {
+                knb[e] && knb[e].map(function (t, i) {
                   return _react2.default.createElement(_Task2.default, {
                     from: e,
                     index: i,
                     key: t.name.replace(' ', '') + '_' + (i + 1232),
-                    id: e + '_' + i,
-                    data: t
+                    id: t.id,
+                    data: t,
+                    openEdit: _this2.addTask(t)
                   });
                 }),
                 e === 'TODO' && _react2.default.createElement(
                   _Button2.default,
-                  { className: classes.addButton, onClick: _this2.addTask(e) },
+                  { className: classes.addButton, onClick: _this2.addTask(true) },
                   'Add'
                 )
               );
             })
           )
         ),
-        _react2.default.createElement(_AddTask2.default, { open: this.state.addTaskModal, handleClose: this.closeAddTask })
+        _react2.default.createElement(_AddTask2.default, {
+          task: this.state.addTaskModal,
+          open: !!this.state.addTaskModal,
+          handleClose: this.closeAddTask
+        })
       );
     }
   }, {
@@ -76907,7 +76923,8 @@ var Login = function (_Component) {
 }(_react.Component);
 
 Login.propTypes = {
-  handleClose: _propTypes2.default.func.isRequired
+  handleClose: _propTypes2.default.func.isRequired,
+  classes: _propTypes2.default.object.isRequired
 };
 
 var _default = (0, _styles.withStyles)(styles)(Login);
@@ -77269,7 +77286,8 @@ var SignUp = function (_Component) {
 }(_react.Component);
 
 SignUp.propTypes = {
-  handleClose: _propTypes2.default.func.isRequired
+  handleClose: _propTypes2.default.func.isRequired,
+  classes: _propTypes2.default.object.isRequired
 };
 
 var _default = (0, _styles.withStyles)(styles)(SignUp);
@@ -77318,6 +77336,8 @@ var _propTypes = __webpack_require__("./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _reactRedux = __webpack_require__("./node_modules/react-redux/es/index.js");
+
 var _reactDom = __webpack_require__("./node_modules/react-dom/index.js");
 
 var _reactDnd = __webpack_require__("./node_modules/react-dnd/lib/index.js");
@@ -77329,6 +77349,8 @@ var _styles = __webpack_require__("./node_modules/material-ui/styles/index.js");
 var _Card = __webpack_require__("./node_modules/material-ui/Card/index.js");
 
 var _Card2 = _interopRequireDefault(_Card);
+
+var _utils = __webpack_require__("./src/utils/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77350,15 +77372,38 @@ var styles = function styles() {
     },
     subheading: {
       margin: '5px',
-      fontSize: '15px'
+      fontSize: '14px'
+    },
+    tags: {
+      display: 'inline-flex',
+      flexDirection: 'column',
+      margin: '20px 5px 5px 5px',
+      border: '1px solid #eee',
+      padding: '10px'
+    },
+    tasks: {
+      display: 'inline-flex',
+      flexDirection: 'column',
+      margin: '20px 5px 5px 5px',
+      border: '1px solid #eee',
+      padding: '10px'
+    },
+    wrapper: {
+      display: 'flex',
+      justifyContent: 'space-between'
     }
   };
 };
 
 var source = {
   beginDrag: function beginDrag(props, monitor, component) {
-    console.log(props, monitor, component);
-    var item = { id: props.id, from: props.from, index: props.index };
+    var item = {
+      id: props.id,
+      from: props.from,
+      index: props.index,
+      taskName: component.props.data.name,
+      blockedBy: component.props.data.blockedBy
+    };
     return item;
   }
 };
@@ -77372,13 +77417,37 @@ var collect = function collect(connect, monitor) {
 
 /* eslint-disable react/no-find-dom-node */
 var Task = function Task(props) {
-  console.log(props);
-
   var connectdg = props.connectdg,
+      openEdit = props.openEdit,
       classes = props.classes,
       data = props.data,
-      rest = _objectWithoutProperties(props, ['connectdg', 'classes', 'data']);
+      tags = props.tags.data,
+      tasks = props.tasks.data,
+      _ = props.dispatch,
+      rest = _objectWithoutProperties(props, ['connectdg', 'openEdit', 'classes', 'data', 'tags', 'tasks', 'dispatch']);
 
+  var getTag = function getTag(id) {
+    var out = void 0;
+    if (!tags) return {};
+    for (var i = 0; i < tags.length; i++) {
+      if (tags[i].id === id) {
+        out = tags[i];
+        break;
+      }
+    }
+    return out;
+  };
+  var getTask = function getTask(id) {
+    var out = void 0;
+    if (!tasks) return {};
+    for (var i = 0; i < tasks.length; i++) {
+      if (tasks[i].id === id) {
+        out = tasks[i];
+        break;
+      }
+    }
+    return out;
+  };
   return _react2.default.createElement(
     _List.ListItem,
     _extends({ ref: function ref(instance) {
@@ -77386,7 +77455,7 @@ var Task = function Task(props) {
       } }, rest),
     _react2.default.createElement(
       _Card2.default,
-      null,
+      { onClick: openEdit },
       _react2.default.createElement(
         _Card.CardContent,
         { className: classes.card },
@@ -77402,26 +77471,64 @@ var Task = function Task(props) {
         ),
         _react2.default.createElement(
           'div',
-          null,
-          data.tags.map(function (e) {
-            return _react2.default.createElement(
-              'span',
-              { key: 'tags_for_' + data.id + '_' + e },
-              e
-            );
-          })
+          { className: classes.wrapper },
+          _react2.default.createElement(
+            'div',
+            { className: classes.tags },
+            data.tags.map(function (e) {
+              var temp = getTag(e);
+              return _react2.default.createElement(
+                'span',
+                { style: { color: _utils.colors[e] }, key: 'tags_for_' + data.id + '_' + e },
+                temp.name || ''
+              );
+            })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: classes.tasks },
+            _react2.default.createElement(
+              'strong',
+              null,
+              'Blocked by:'
+            ),
+            data.blockedBy.map(function (e) {
+              var temp = getTask(e);
+              return _react2.default.createElement(
+                'span',
+                { key: 'task_blockeby_' + e },
+                temp.name
+              );
+            })
+          )
         )
       )
     )
   );
 };
 
-Task.propTypes = {
-  connectdg: _propTypes2.default.func.isRequired,
-  data: _propTypes2.default.object.isRequired
+Task.defaultProps = {
+  openEdit: function openEdit() {}
 };
 
-var _default = (0, _reactDnd.DragSource)('task', source, collect)((0, _styles.withStyles)(styles)(Task));
+Task.propTypes = {
+  connectdg: _propTypes2.default.func.isRequired,
+  data: _propTypes2.default.object.isRequired,
+  openEdit: _propTypes2.default.func,
+  classes: _propTypes2.default.object.isRequired,
+  tags: _propTypes2.default.object.isRequired,
+  tasks: _propTypes2.default.object.isRequired,
+  dispatch: _propTypes2.default.func.isRequired
+};
+
+var mapStatToProps = function mapStatToProps(state) {
+  return {
+    tags: state.api.tags.data,
+    tasks: state.api.tasks.data
+  };
+};
+
+var _default = (0, _reactDnd.DragSource)('task', source, collect)((0, _reactRedux.connect)(mapStatToProps)((0, _styles.withStyles)(styles)(Task)));
 
 exports.default = _default;
 ;
@@ -77439,6 +77546,7 @@ exports.default = _default;
   reactHotLoader.register(source, 'source', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   reactHotLoader.register(collect, 'collect', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   reactHotLoader.register(Task, 'Task', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
+  reactHotLoader.register(mapStatToProps, 'mapStatToProps', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   leaveModule(module);
 })();
@@ -77501,67 +77609,12 @@ var _c = {
   PROGRESS: 'IN_PROGRESS',
   DONE: 'DONE',
   MOVE_TO_COLUMN: '>>move_to_column',
-  SET_TASKS: '>>set_tasks'
+  SET_TASKS: '>>set_tasks',
+  UPDATE_TASK: '>>update_task',
+  ADD_NEW: '>>and_new_task'
 };
 
-var initialState = {
-  /*
-  [_c.TODO]: [
-    {
-      name: 'task one',
-      description: 'description goes here',
-      status: _c.TODO,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-    {
-      name: 'taask two',
-      description: 'description goes here',
-      status: _c.TODO,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-  ],
-  [_c.PROGRESS]: [
-    {
-      name: 'tazcsk e',
-      description: 'description goes here',
-      status: _c.PROGRESS,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-    {
-      name: 'taefsk e',
-      description: 'description goes here',
-      status: _c.PROGRESS,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-  ],
-  [_c.DONE]: [
-    {
-      name: 'taswk e',
-      description: 'description goes here',
-      status: _c.DONE,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-    {
-      name: 'taswqk e',
-      description: 'description goes here',
-      status: _c.DONE,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-  ],
-  */
-};
+var initialState = {};
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -77570,11 +77623,39 @@ var reducer = function reducer() {
   var newState = Object.assign({}, state);
   var p = action.payload;
   switch (action.type) {
-    case _c.MOVE_TO_COLUMN:
+    /* case _c.MOVE_TO_COLUMN:
+      if (p.to === 'DONE') {
+        let bool = false;
+        if (newState[p.index].blockedBy.length > 0) {
+          newState[p.index].blockedBy.forEach((e) => {
+            state.TODO.concat(state.iN_PROGRESS).forEach((n) => {
+              if (n.id === e) bool = true;
+            });
+          });
+        }
+        if (bool) return state;
+      }
       newState[p.to] = newState[p.to].concat(newState[p.from].splice(p.index, 1));
-      return newState;
+      return newState; */
     case _c.SET_TASKS:
       return action.payload;
+    case _c.UPDATE_TASK:
+      if (p.id && !p.error) {
+        Object.keys(newState).forEach(function (k) {
+          newState[k].forEach(function (e, i) {
+            if (e.id === p.id) {
+              if (e.status === p.status) newState[k][i] = p;else {
+                newState[k].splice(i, 1);
+                newState[p.status].push(p);
+              }
+            }
+          });
+        });
+      }
+      return newState;
+    case _c.ADD_NEW:
+      newState[_c.TODO].push(p);
+      return newState;
     default:
       return newState;
   }
@@ -77594,6 +77675,18 @@ var setTasks = exports.setTasks = function setTasks(payload) {
     payload: payload
   };
 };
+var updateTask = exports.updateTask = function updateTask(payload) {
+  return {
+    type: _c.UPDATE_TASK,
+    payload: payload
+  };
+};
+var addNewTask = exports.addNewTask = function addNewTask(payload) {
+  return {
+    type: _c.ADD_NEW,
+    payload: payload
+  };
+};
 ;
 
 (function () {
@@ -77610,6 +77703,8 @@ var setTasks = exports.setTasks = function setTasks(payload) {
   reactHotLoader.register(reducer, 'reducer', '/prpa-projects/www/jobtests/ag04/src/store/Knb.js');
   reactHotLoader.register(moveToColumn, 'moveToColumn', '/prpa-projects/www/jobtests/ag04/src/store/Knb.js');
   reactHotLoader.register(setTasks, 'setTasks', '/prpa-projects/www/jobtests/ag04/src/store/Knb.js');
+  reactHotLoader.register(updateTask, 'updateTask', '/prpa-projects/www/jobtests/ag04/src/store/Knb.js');
+  reactHotLoader.register(addNewTask, 'addNewTask', '/prpa-projects/www/jobtests/ag04/src/store/Knb.js');
   reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/store/Knb.js');
   leaveModule(module);
 })();
@@ -77697,6 +77792,47 @@ exports.default = _default;
   reactHotLoader.register(api, 'api', '/prpa-projects/www/jobtests/ag04/src/store/Store.js');
   reactHotLoader.register(rootReducer, 'rootReducer', '/prpa-projects/www/jobtests/ag04/src/store/Store.js');
   reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/store/Store.js');
+  leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./src/utils/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+(function () {
+  var enterModule = __webpack_require__("./node_modules/react-hot-loader/index.js").enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+var colors = exports.colors = ['#b71212', '#339a2e', '#102bbd', '#bd106d', '#dea909', '#09c7de'];
+
+var _default = {};
+exports.default = _default;
+;
+
+(function () {
+  var reactHotLoader = __webpack_require__("./node_modules/react-hot-loader/index.js").default;
+
+  var leaveModule = __webpack_require__("./node_modules/react-hot-loader/index.js").leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(colors, 'colors', '/prpa-projects/www/jobtests/ag04/src/utils/index.js');
+  reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/utils/index.js');
   leaveModule(module);
 })();
 

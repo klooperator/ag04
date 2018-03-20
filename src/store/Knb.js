@@ -4,76 +4,50 @@ const _c = {
   DONE: 'DONE',
   MOVE_TO_COLUMN: '>>move_to_column',
   SET_TASKS: '>>set_tasks',
+  UPDATE_TASK: '>>update_task',
+  ADD_NEW: '>>and_new_task',
 };
 
-const initialState = {
-  /*
-  [_c.TODO]: [
-    {
-      name: 'task one',
-      description: 'description goes here',
-      status: _c.TODO,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-    {
-      name: 'taask two',
-      description: 'description goes here',
-      status: _c.TODO,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-  ],
-  [_c.PROGRESS]: [
-    {
-      name: 'tazcsk e',
-      description: 'description goes here',
-      status: _c.PROGRESS,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-    {
-      name: 'taefsk e',
-      description: 'description goes here',
-      status: _c.PROGRESS,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-  ],
-  [_c.DONE]: [
-    {
-      name: 'taswk e',
-      description: 'description goes here',
-      status: _c.DONE,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-    {
-      name: 'taswqk e',
-      description: 'description goes here',
-      status: _c.DONE,
-      assignee: 'f33a440f-c18f-4d62-a6d8-25411d937cfa',
-      tags: [1],
-      blockedBy: [],
-    },
-  ],
- */
-};
+const initialState = {};
 
 const reducer = (state = initialState, action) => {
   const newState = { ...state };
   const p = action.payload;
   switch (action.type) {
-    case _c.MOVE_TO_COLUMN:
+    /* case _c.MOVE_TO_COLUMN:
+      if (p.to === 'DONE') {
+        let bool = false;
+        if (newState[p.index].blockedBy.length > 0) {
+          newState[p.index].blockedBy.forEach((e) => {
+            state.TODO.concat(state.iN_PROGRESS).forEach((n) => {
+              if (n.id === e) bool = true;
+            });
+          });
+        }
+        if (bool) return state;
+      }
       newState[p.to] = newState[p.to].concat(newState[p.from].splice(p.index, 1));
-      return newState;
+      return newState; */
     case _c.SET_TASKS:
       return action.payload;
+    case _c.UPDATE_TASK:
+      if (p.id && !p.error) {
+        Object.keys(newState).forEach((k) => {
+          newState[k].forEach((e, i) => {
+            if (e.id === p.id) {
+              if (e.status === p.status) newState[k][i] = p;
+              else {
+                newState[k].splice(i, 1);
+                newState[p.status].push(p);
+              }
+            }
+          });
+        });
+      }
+      return newState;
+    case _c.ADD_NEW:
+      newState[_c.TODO].push(p);
+      return newState;
     default:
       return newState;
   }
@@ -87,5 +61,13 @@ export const moveToColumn = payload => ({
 });
 export const setTasks = payload => ({
   type: _c.SET_TASKS,
+  payload,
+});
+export const updateTask = payload => ({
+  type: _c.UPDATE_TASK,
+  payload,
+});
+export const addNewTask = payload => ({
+  type: _c.ADD_NEW,
   payload,
 });

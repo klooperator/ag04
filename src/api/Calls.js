@@ -1,5 +1,5 @@
 import token from './prefetch';
-import { tasks } from './postfetch';
+import { tasks, taskUpdated, addNewTask } from './postfetch';
 
 const route = '/api/';
 
@@ -35,6 +35,7 @@ export default {
       method: 'post',
     },
     prefetch: [token],
+    postfetch: [addNewTask],
   },
   update_task: {
     url: `${route}task/:task_id`,
@@ -42,6 +43,7 @@ export default {
       method: 'put',
     },
     prefetch: [token],
+    postfetch: [taskUpdated],
   },
   tags: {
     url: `${route}tags`,

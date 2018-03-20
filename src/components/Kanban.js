@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
-/* import api from 'redux-rest-fetcher'; */
 import Card, { CardContent } from 'material-ui/Card';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -33,15 +32,9 @@ class Kanban extends Component {
     super(props);
     this.state = { addTaskModal: false };
   }
-  /* componentWillReceiveProps(next) {
-    console.log(next);
-    if (!this.props.tasks.data && next.tasks.data) {
-      this.setState({ knb: this.getTasks(next.tasks.data) });
-    }
-  } */
 
-  addTask = name => () => {
-    this.setState({ addTaskModal: true });
+  addTask = data => () => {
+    this.setState({ addTaskModal: data });
   };
 
   getTasks = (data) => {
@@ -65,27 +58,27 @@ class Kanban extends Component {
   };
 
   render() {
-    console.log(this);
     const { classes, style, knb } = this.props;
-    /* const { knb } = this.state; */
     if (!knb) return <div />;
     return (
       <Aux>
         <Card style={style}>
           <CardContent className={classes.card}>
-            {Object.keys(knb).map(e => (
+            {_c.map(e => (
               <Column className={classes.list} name={e} key={e}>
-                {knb[e].map((t, i) => (
-                  <Task
-                    from={e}
-                    index={i}
-                    key={`${t.name.replace(' ', '')}_${i + 1232}`}
-                    id={`${e}_${i}`}
-                    data={t}
-                  />
-                ))}
+                {knb[e] &&
+                  knb[e].map((t, i) => (
+                    <Task
+                      from={e}
+                      index={i}
+                      key={`${t.name.replace(' ', '')}_${i + 1232}`}
+                      id={t.id}
+                      data={t}
+                      openEdit={this.addTask(t)}
+                    />
+                  ))}
                 {e === 'TODO' && (
-                  <Button className={classes.addButton} onClick={this.addTask(e)}>
+                  <Button className={classes.addButton} onClick={this.addTask(true)}>
                     Add
                   </Button>
                 )}
@@ -93,7 +86,11 @@ class Kanban extends Component {
             ))}
           </CardContent>
         </Card>
-        <AddTask open={this.state.addTaskModal} handleClose={this.closeAddTask} />
+        <AddTask
+          task={this.state.addTaskModal}
+          open={!!this.state.addTaskModal}
+          handleClose={this.closeAddTask}
+        />
       </Aux>
     );
   }
