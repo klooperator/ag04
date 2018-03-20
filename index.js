@@ -24,7 +24,7 @@ const store = createStore();
 api.setDispatcher(store.dispatch);
 api.setGetState(store.getState);
 
-api.sign_in({ body: { username: 'klo', password: 'test' } });
+/* api.sign_in({ body: { username: 'klo', password: 'test' } }); */
 
 const CENTRAL_NODE = document.getElementById('app');
 
