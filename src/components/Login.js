@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 import api from 'redux-rest-fetcher';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
+
+const styles = () => ({
+  card: {
+    padding: '20px',
+  },
+  submitBttn: {
+    margin: '20px 0 0 0',
+  },
+});
 
 const _c = {
   USER: 'username',
@@ -32,9 +42,9 @@ class Login extends Component {
   };
 
   render() {
-    const { handleClose, ...other } = this.props;
+    const { handleClose, classes, ...other } = this.props;
     return (
-      <Dialog onClose={handleClose} {...other}>
+      <Dialog PaperProps={{ className: classes.card }} onClose={handleClose} {...other}>
         <DialogTitle>Login</DialogTitle>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <TextField
@@ -51,7 +61,9 @@ class Login extends Component {
             onChange={this.onInput(_c.PASS)}
             margin="normal"
           />
-          <Button onClick={this.submit}>Submit</Button>
+          <Button className={classes.submitBttn} onClick={this.submit}>
+            Submit
+          </Button>
         </div>
       </Dialog>
     );
@@ -61,4 +73,4 @@ class Login extends Component {
 Login.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
-export default Login;
+export default withStyles(styles)(Login);

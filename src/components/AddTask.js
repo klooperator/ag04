@@ -5,12 +5,22 @@ import api from 'redux-rest-fetcher';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 
+const styles = () => ({
+  card: {
+    padding: '20px',
+  },
+  tags: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+});
 const _c = {
   NAME: 'name',
   DESC: 'description',
@@ -22,12 +32,13 @@ const _c = {
 class AddTask extends Component {
   constructor(props) {
     super(props);
+    const { task } = props;
     this.state = {
-      [_c.NAME]: '',
-      [_c.DESC]: '',
-      [_c.TAGS]: [],
-      [_c.ASIGNEE]: '',
-      [_c.BLOCK]: [],
+      [_c.NAME]: task && task[_c.NAME] ? task[_c.NAME] : '',
+      [_c.DESC]: task && task[_c.DESC] ? task[_c.DESC] : '',
+      [_c.TAGS]: task && task[_c.TAGS] ? task[_c.TAGS] : [],
+      [_c.ASIGNEE]: task && task[_c.ASIGNEE] ? task[_c.ASIGNEE] : '',
+      [_c.BLOCK]: task && task[_c.BLOCK] ? task[_c.BLOCK] : [],
     };
   }
   onInput = what => (event) => {
@@ -41,13 +52,13 @@ class AddTask extends Component {
       [_c.TAGS]: tags,
       [_c.BLOCK]: blockedBy,
     } = this.state;
-    const asignee = null;
+    /* const asignee = null; */
     const task = {
       name,
       description,
       status: 'TODO',
       tags,
-      asignee,
+      /* asignee, */
       blockedBy,
     };
     console.log(task);
@@ -87,10 +98,11 @@ class AddTask extends Component {
       tags: { data: tags },
       tasks: { data: tasks },
       dispatch: _,
+      classes,
       ...other
     } = this.props;
     return (
-      <Dialog onClose={handleClose} {...other}>
+      <Dialog PaperProps={{ className: classes.card }} onClose={handleClose} {...other}>
         <DialogTitle>AddTask</DialogTitle>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <TextField
@@ -107,7 +119,7 @@ class AddTask extends Component {
             onChange={this.onInput(_c.DESC)}
             margin="normal"
           />
-          <FormGroup>
+          <FormGroup className={classes.tags}>
             {!!tags &&
               tags.map(t => (
                 <FormControlLabel
@@ -125,7 +137,11 @@ class AddTask extends Component {
           </FormGroup>
           <div>
             <h4>Asigne to:</h4>
-            <Select value={this.state[_c.ASIGNEE]} onChange={this.handleAssignee}>
+            <Select
+              value={this.state[_c.ASIGNEE]}
+              onChange={this.handleAssignee}
+              style={{ width: '100%' }}
+            >
               {!!users &&
                 users.map(t => (
                   <MenuItem value={t.id} key={`tag_key_${t.id}`}>
@@ -170,7 +186,7 @@ const mapStateToProps = state => ({
   users: state.api.users.data,
   tasks: state.api.tasks.data,
 });
-export default connect(mapStateToProps)(AddTask);
+export default connect(mapStateToProps)(withStyles(styles)(AddTask));
 
 /* <Select value="">
             {!!tags &&

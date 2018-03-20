@@ -3,7 +3,21 @@ import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
 import { ListItem } from 'material-ui/List';
+import { withStyles } from 'material-ui/styles';
 import Card, { CardContent } from 'material-ui/Card';
+
+const styles = () => ({
+  card: {
+    padding: '4px',
+  },
+  heading: {
+    margin: '5px',
+  },
+  subheading: {
+    margin: '5px',
+    fontSize: '15px',
+  },
+});
 
 const source = {
   beginDrag(props, monitor, component) {
@@ -20,13 +34,17 @@ const collect = (connect, monitor) => ({
 
 /* eslint-disable react/no-find-dom-node */
 const Task = (props) => {
-  const { connectdg, data, ...rest } = props;
+  console.log(props);
+  const {
+    connectdg, classes, data, ...rest
+  } = props;
   return (
     <ListItem ref={instance => connectdg(findDOMNode(instance))} {...rest}>
       <Card>
-        <CardContent>
-          <h3>{data.name}</h3>
-          <span>{data.description}</span>
+        <CardContent className={classes.card}>
+          <h3 className={classes.heading}>{data.name}</h3>
+          <span className={classes.subheading}>{data.description}</span>
+          <div>{data.tags.map(e => <span key={`tags_for_${data.id}_${e}`}>{e}</span>)}</div>
         </CardContent>
       </Card>
     </ListItem>
@@ -38,4 +56,4 @@ Task.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default DragSource('task', source, collect)(Task);
+export default DragSource('task', source, collect)(withStyles(styles)(Task));

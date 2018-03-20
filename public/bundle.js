@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "37dfd3a2a3cddc757553"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "048a96622ba2b9daa280"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -76060,6 +76060,8 @@ var _Button = __webpack_require__("./node_modules/material-ui/Button/index.js");
 
 var _Button2 = _interopRequireDefault(_Button);
 
+var _styles = __webpack_require__("./node_modules/material-ui/styles/index.js");
+
 var _List = __webpack_require__("./node_modules/material-ui/List/index.js");
 
 var _List2 = _interopRequireDefault(_List);
@@ -76094,6 +76096,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var styles = function styles() {
+  return {
+    card: {
+      padding: '20px'
+    },
+    tags: {
+      display: 'flex',
+      flexDirection: 'row'
+    }
+  };
+};
 var _c = {
   NAME: 'name',
   DESC: 'description',
@@ -76106,67 +76119,17 @@ var AddTask = function (_Component) {
   _inherits(AddTask, _Component);
 
   function AddTask(props) {
-    var _this$state2;
+    var _this$state;
 
     _classCallCheck(this, AddTask);
 
     var _this = _possibleConstructorReturn(this, (AddTask.__proto__ || Object.getPrototypeOf(AddTask)).call(this, props));
 
-    _this.onInput = function (what) {
-      return function (event) {
-        _this.setState(_defineProperty({}, what, event.target.value));
-      };
-    };
+    _initialiseProps.call(_this);
 
-    _this.submit = function () {
-      var _this$state = _this.state,
-          name = _this$state[_c.NAME],
-          description = _this$state[_c.DESC],
-          tags = _this$state[_c.TAGS],
-          blockedBy = _this$state[_c.BLOCK];
+    var task = props.task;
 
-      var asignee = null;
-      var task = {
-        name: name,
-        description: description,
-        status: 'TODO',
-        tags: tags,
-        asignee: asignee,
-        blockedBy: blockedBy
-      };
-      console.log(task);
-      _reduxRestFetcher2.default.task({ body: task });
-    };
-
-    _this.handleTagChange = function (id) {
-      return function (e) {
-        var tags = _this.state[_c.TAGS];
-        if (e.target.checked) tags.push(id);else {
-          tags.splice(tags.indexOf(id), 1);
-        }
-        _this.setState(_defineProperty({}, _c.TAGS, tags));
-      };
-    };
-
-    _this.handleBlockbyChange = function (id) {
-      return function (e) {
-        var block = _this.state[_c.BLOCK];
-        if (e.target.checked) block.push(id);else {
-          block.splice(block.indexOf(id), 1);
-        }
-        _this.setState(_defineProperty({}, _c.BLOCK, block));
-      };
-    };
-
-    _this.handleAssignee = function (e) {
-      var value = e.target.value;
-
-      if (value !== '' && value) {
-        _this.setState(_defineProperty({}, _c.ASIGNEE, value));
-      } else _this.setState(_defineProperty({}, _c.ASIGNEE, ''));
-    };
-
-    _this.state = (_this$state2 = {}, _defineProperty(_this$state2, _c.NAME, ''), _defineProperty(_this$state2, _c.DESC, ''), _defineProperty(_this$state2, _c.TAGS, []), _defineProperty(_this$state2, _c.ASIGNEE, ''), _defineProperty(_this$state2, _c.BLOCK, []), _this$state2);
+    _this.state = (_this$state = {}, _defineProperty(_this$state, _c.NAME, task && task[_c.NAME] ? task[_c.NAME] : ''), _defineProperty(_this$state, _c.DESC, task && task[_c.DESC] ? task[_c.DESC] : ''), _defineProperty(_this$state, _c.TAGS, task && task[_c.TAGS] ? task[_c.TAGS] : []), _defineProperty(_this$state, _c.ASIGNEE, task && task[_c.ASIGNEE] ? task[_c.ASIGNEE] : ''), _defineProperty(_this$state, _c.BLOCK, task && task[_c.BLOCK] ? task[_c.BLOCK] : []), _this$state);
     return _this;
   }
 
@@ -76183,11 +76146,12 @@ var AddTask = function (_Component) {
           tags = _props.tags.data,
           tasks = _props.tasks.data,
           _ = _props.dispatch,
-          other = _objectWithoutProperties(_props, ['handleClose', 'users', 'tags', 'tasks', 'dispatch']);
+          classes = _props.classes,
+          other = _objectWithoutProperties(_props, ['handleClose', 'users', 'tags', 'tasks', 'dispatch', 'classes']);
 
       return _react2.default.createElement(
         _Dialog2.default,
-        _extends({ onClose: handleClose }, other),
+        _extends({ PaperProps: { className: classes.card }, onClose: handleClose }, other),
         _react2.default.createElement(
           _Dialog.DialogTitle,
           null,
@@ -76212,7 +76176,7 @@ var AddTask = function (_Component) {
           }),
           _react2.default.createElement(
             _Form.FormGroup,
-            null,
+            { className: classes.tags },
             !!tags && tags.map(function (t) {
               return _react2.default.createElement(_Form.FormControlLabel, {
                 key: t.name + '_' + t.id,
@@ -76235,7 +76199,11 @@ var AddTask = function (_Component) {
             ),
             _react2.default.createElement(
               _Select2.default,
-              { value: this.state[_c.ASIGNEE], onChange: this.handleAssignee },
+              {
+                value: this.state[_c.ASIGNEE],
+                onChange: this.handleAssignee,
+                style: { width: '100%' }
+              },
               !!users && users.map(function (t) {
                 return _react2.default.createElement(
                   _Menu.MenuItem,
@@ -76293,6 +76261,64 @@ var AddTask = function (_Component) {
   return AddTask;
 }(_react.Component);
 
+var _initialiseProps = function _initialiseProps() {
+  var _this3 = this;
+
+  this.onInput = function (what) {
+    return function (event) {
+      _this3.setState(_defineProperty({}, what, event.target.value));
+    };
+  };
+
+  this.submit = function () {
+    var _state = _this3.state,
+        name = _state[_c.NAME],
+        description = _state[_c.DESC],
+        tags = _state[_c.TAGS],
+        blockedBy = _state[_c.BLOCK];
+    /* const asignee = null; */
+
+    var task = {
+      name: name,
+      description: description,
+      status: 'TODO',
+      tags: tags,
+      /* asignee, */
+      blockedBy: blockedBy
+    };
+    console.log(task);
+    _reduxRestFetcher2.default.task({ body: task });
+  };
+
+  this.handleTagChange = function (id) {
+    return function (e) {
+      var tags = _this3.state[_c.TAGS];
+      if (e.target.checked) tags.push(id);else {
+        tags.splice(tags.indexOf(id), 1);
+      }
+      _this3.setState(_defineProperty({}, _c.TAGS, tags));
+    };
+  };
+
+  this.handleBlockbyChange = function (id) {
+    return function (e) {
+      var block = _this3.state[_c.BLOCK];
+      if (e.target.checked) block.push(id);else {
+        block.splice(block.indexOf(id), 1);
+      }
+      _this3.setState(_defineProperty({}, _c.BLOCK, block));
+    };
+  };
+
+  this.handleAssignee = function (e) {
+    var value = e.target.value;
+
+    if (value !== '' && value) {
+      _this3.setState(_defineProperty({}, _c.ASIGNEE, value));
+    } else _this3.setState(_defineProperty({}, _c.ASIGNEE, ''));
+  };
+};
+
 AddTask.propTypes = {
   handleClose: _propTypes2.default.func.isRequired
 };
@@ -76304,7 +76330,7 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-var _default = (0, _reactRedux.connect)(mapStateToProps)(AddTask);
+var _default = (0, _reactRedux.connect)(mapStateToProps)((0, _styles.withStyles)(styles)(AddTask));
 
 exports.default = _default;
 
@@ -76336,6 +76362,7 @@ exports.default = _default;
     return;
   }
 
+  reactHotLoader.register(styles, 'styles', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
   reactHotLoader.register(_c, '_c', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
   reactHotLoader.register(AddTask, 'AddTask', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
   reactHotLoader.register(mapStateToProps, 'mapStateToProps', '/prpa-projects/www/jobtests/ag04/src/components/AddTask.js');
@@ -76451,7 +76478,7 @@ var Column = function Column(props) {
           return connectdt((0, _reactDom.findDOMNode)(instance));
         }
       }, rest, {
-        style: { marginTop: 'auto', minHeight: '200px', minWidth: '200px' }
+        style: { marginTop: 'auto', minHeight: '300px', minWidth: '250px' }
       }),
       children
     )
@@ -76760,6 +76787,8 @@ var _TextField = __webpack_require__("./node_modules/material-ui/TextField/index
 
 var _TextField2 = _interopRequireDefault(_TextField);
 
+var _styles = __webpack_require__("./node_modules/material-ui/styles/index.js");
+
 var _Button = __webpack_require__("./node_modules/material-ui/Button/index.js");
 
 var _Button2 = _interopRequireDefault(_Button);
@@ -76781,6 +76810,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = function styles() {
+  return {
+    card: {
+      padding: '20px'
+    },
+    submitBttn: {
+      margin: '20px 0 0 0'
+    }
+  };
+};
 
 var _c = {
   USER: 'username',
@@ -76820,11 +76860,12 @@ var Login = function (_Component) {
     value: function render() {
       var _props = this.props,
           handleClose = _props.handleClose,
-          other = _objectWithoutProperties(_props, ['handleClose']);
+          classes = _props.classes,
+          other = _objectWithoutProperties(_props, ['handleClose', 'classes']);
 
       return _react2.default.createElement(
         _Dialog2.default,
-        _extends({ onClose: handleClose }, other),
+        _extends({ PaperProps: { className: classes.card }, onClose: handleClose }, other),
         _react2.default.createElement(
           _Dialog.DialogTitle,
           null,
@@ -76849,7 +76890,7 @@ var Login = function (_Component) {
           }),
           _react2.default.createElement(
             _Button2.default,
-            { onClick: this.submit },
+            { className: classes.submitBttn, onClick: this.submit },
             'Submit'
           )
         )
@@ -76868,7 +76909,9 @@ var Login = function (_Component) {
 Login.propTypes = {
   handleClose: _propTypes2.default.func.isRequired
 };
-var _default = Login;
+
+var _default = (0, _styles.withStyles)(styles)(Login);
+
 exports.default = _default;
 ;
 
@@ -76881,6 +76924,7 @@ exports.default = _default;
     return;
   }
 
+  reactHotLoader.register(styles, 'styles', '/prpa-projects/www/jobtests/ag04/src/components/Login.js');
   reactHotLoader.register(_c, '_c', '/prpa-projects/www/jobtests/ag04/src/components/Login.js');
   reactHotLoader.register(Login, 'Login', '/prpa-projects/www/jobtests/ag04/src/components/Login.js');
   reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/components/Login.js');
@@ -77098,6 +77142,8 @@ var _TextField = __webpack_require__("./node_modules/material-ui/TextField/index
 
 var _TextField2 = _interopRequireDefault(_TextField);
 
+var _styles = __webpack_require__("./node_modules/material-ui/styles/index.js");
+
 var _Button = __webpack_require__("./node_modules/material-ui/Button/index.js");
 
 var _Button2 = _interopRequireDefault(_Button);
@@ -77120,21 +77166,31 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var styles = function styles() {
+  return {
+    card: {
+      padding: '20px'
+    },
+    submitBttn: {
+      margin: '20px 0 0 0'
+    }
+  };
+};
 var _c = {
   USER: 'username',
   PASS: 'password',
   NAME: 'name'
 };
 
-var Login = function (_Component) {
-  _inherits(Login, _Component);
+var SignUp = function (_Component) {
+  _inherits(SignUp, _Component);
 
-  function Login(props) {
+  function SignUp(props) {
     var _this$state;
 
-    _classCallCheck(this, Login);
+    _classCallCheck(this, SignUp);
 
-    var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
 
     _this.onInput = function (what) {
       return function (event) {
@@ -77154,20 +77210,21 @@ var Login = function (_Component) {
     return _this;
   }
 
-  _createClass(Login, [{
+  _createClass(SignUp, [{
     key: 'render',
     value: function render() {
       var _props = this.props,
           handleClose = _props.handleClose,
-          other = _objectWithoutProperties(_props, ['handleClose']);
+          classes = _props.classes,
+          other = _objectWithoutProperties(_props, ['handleClose', 'classes']);
 
       return _react2.default.createElement(
         _Dialog2.default,
-        _extends({ onClose: handleClose }, other),
+        _extends({ PaperProps: { className: classes.card }, onClose: handleClose }, other),
         _react2.default.createElement(
           _Dialog.DialogTitle,
           null,
-          'Login'
+          'SignUp'
         ),
         _react2.default.createElement(
           'div',
@@ -77195,7 +77252,7 @@ var Login = function (_Component) {
           }),
           _react2.default.createElement(
             _Button2.default,
-            { onClick: this.submit },
+            { className: classes.submitBttn, onClick: this.submit },
             'Submit'
           )
         )
@@ -77208,14 +77265,15 @@ var Login = function (_Component) {
     }
   }]);
 
-  return Login;
+  return SignUp;
 }(_react.Component);
 
-Login.propTypes = {
+SignUp.propTypes = {
   handleClose: _propTypes2.default.func.isRequired
 };
 
-var _default = Login;
+var _default = (0, _styles.withStyles)(styles)(SignUp);
+
 exports.default = _default;
 ;
 
@@ -77228,8 +77286,9 @@ exports.default = _default;
     return;
   }
 
+  reactHotLoader.register(styles, 'styles', '/prpa-projects/www/jobtests/ag04/src/components/Signup.js');
   reactHotLoader.register(_c, '_c', '/prpa-projects/www/jobtests/ag04/src/components/Signup.js');
-  reactHotLoader.register(Login, 'Login', '/prpa-projects/www/jobtests/ag04/src/components/Signup.js');
+  reactHotLoader.register(SignUp, 'SignUp', '/prpa-projects/www/jobtests/ag04/src/components/Signup.js');
   reactHotLoader.register(_default, 'default', '/prpa-projects/www/jobtests/ag04/src/components/Signup.js');
   leaveModule(module);
 })();
@@ -77265,6 +77324,8 @@ var _reactDnd = __webpack_require__("./node_modules/react-dnd/lib/index.js");
 
 var _List = __webpack_require__("./node_modules/material-ui/List/index.js");
 
+var _styles = __webpack_require__("./node_modules/material-ui/styles/index.js");
+
 var _Card = __webpack_require__("./node_modules/material-ui/Card/index.js");
 
 var _Card2 = _interopRequireDefault(_Card);
@@ -77278,6 +77339,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 })();
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var styles = function styles() {
+  return {
+    card: {
+      padding: '4px'
+    },
+    heading: {
+      margin: '5px'
+    },
+    subheading: {
+      margin: '5px',
+      fontSize: '15px'
+    }
+  };
+};
 
 var source = {
   beginDrag: function beginDrag(props, monitor, component) {
@@ -77296,9 +77372,12 @@ var collect = function collect(connect, monitor) {
 
 /* eslint-disable react/no-find-dom-node */
 var Task = function Task(props) {
+  console.log(props);
+
   var connectdg = props.connectdg,
+      classes = props.classes,
       data = props.data,
-      rest = _objectWithoutProperties(props, ['connectdg', 'data']);
+      rest = _objectWithoutProperties(props, ['connectdg', 'classes', 'data']);
 
   return _react2.default.createElement(
     _List.ListItem,
@@ -77310,16 +77389,27 @@ var Task = function Task(props) {
       null,
       _react2.default.createElement(
         _Card.CardContent,
-        null,
+        { className: classes.card },
         _react2.default.createElement(
           'h3',
-          null,
+          { className: classes.heading },
           data.name
         ),
         _react2.default.createElement(
           'span',
-          null,
+          { className: classes.subheading },
           data.description
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          data.tags.map(function (e) {
+            return _react2.default.createElement(
+              'span',
+              { key: 'tags_for_' + data.id + '_' + e },
+              e
+            );
+          })
         )
       )
     )
@@ -77331,7 +77421,7 @@ Task.propTypes = {
   data: _propTypes2.default.object.isRequired
 };
 
-var _default = (0, _reactDnd.DragSource)('task', source, collect)(Task);
+var _default = (0, _reactDnd.DragSource)('task', source, collect)((0, _styles.withStyles)(styles)(Task));
 
 exports.default = _default;
 ;
@@ -77345,6 +77435,7 @@ exports.default = _default;
     return;
   }
 
+  reactHotLoader.register(styles, 'styles', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   reactHotLoader.register(source, 'source', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   reactHotLoader.register(collect, 'collect', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');
   reactHotLoader.register(Task, 'Task', '/prpa-projects/www/jobtests/ag04/src/components/Task.js');

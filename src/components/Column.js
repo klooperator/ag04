@@ -52,7 +52,7 @@ const Column = (props) => {
       <List
         ref={instance => connectdt(findDOMNode(instance))}
         {...rest}
-        style={{ marginTop: 'auto', minHeight: '200px', minWidth: '200px' }}
+        style={{ marginTop: 'auto', minHeight: '300px', minWidth: '250px' }}
       >
         {children}
       </List>
