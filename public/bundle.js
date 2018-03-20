@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "048a96622ba2b9daa280"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "58d34236cf312fba8e36"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -784,7 +784,7 @@ var store = (0, _Store2.default)();
 _reduxRestFetcher2.default.setDispatcher(store.dispatch);
 _reduxRestFetcher2.default.setGetState(store.getState);
 
-_reduxRestFetcher2.default.sign_in({ body: { username: 'klo', password: 'test' } });
+/* api.sign_in({ body: { username: 'klo', password: 'test' } }); */
 
 var CENTRAL_NODE = document.getElementById('app');
 
